@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 의존성
 /node_modules
 /package-lock.json
@@ -28,3 +29,24 @@ Thumbs.db
 
 # VS Code 설정
 .vscode
+=======
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env
+.env
+.env.*.local
+
+# Logs
+logs/
+*.log
+logs/*.log
+
+# Build
+dist/
+coverage/
+>>>>>>> 8e2ad5d2abcf8ac7fda083e030fb3e3a4f78e5a4
