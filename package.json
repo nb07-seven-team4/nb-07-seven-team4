@@ -1,12 +1,37 @@
 {
+  "name": "seven-backend",
+  "version": "1.0.0",
+  "description": "SEVEN 운동 인증 커뮤니티 백엔드 서버",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "build": "npm install && npx prisma db push && npx prisma generate",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:seed": "node prisma/seed.js"
+  },
+  "keywords": ["express", "prisma", "postgresql", "fitness", "community"],
+  "author": "Team 4",
+  "license": "MIT",
   "dependencies": {
-    "@prisma/client": "^7.1.0",
+    "@prisma/adapter-pg": "^7.0.0",
+    "@prisma/client": "^7.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.2.1",
-    "pg": "^8.16.3"
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "pg": "^8.16.3",
+    "bcrypt": "^5.1.1"
   },
   "devDependencies": {
-    "prisma": "^7.1.0"
+    "@types/node": "^24.10.1",
+    "@types/pg": "^8.15.6",
+    "prisma": "^7.0.0",
+    "ts-node": "^10.9.2",
+    "nodemon": "^3.0.2"
   }
 }
