@@ -1,3 +1,5 @@
+import { group } from "console";
+
 export class record {
   constructor(
     id,
@@ -21,3 +23,17 @@ export class record {
     this.prarticipantId = prarticipantId;
   }
 }
+
+// -------------- 유효성 검사 --------------------
+
+validateRecordInfo({
+  id,
+  exerciseType,
+  description,
+  duration,
+  distance,
+  images,
+  createdAt,
+  groupId,
+  prarticipantId,
+});
