@@ -1,9 +1,5 @@
 {
-  "type": "module",  
-  "scripts": {
-    "start": "node app.js",  
-    "build": "npm install && npx prisma db push && npx prisma generate"
-  },
+  "type": "module",
   "dependencies": {
     "@prisma/client": "^7.1.0",
     "cors": "^2.8.5",
