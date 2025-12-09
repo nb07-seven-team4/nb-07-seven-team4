@@ -56,7 +56,7 @@ router.delete("/:groupId", async (req, res, next) => {
 // POST /groups/:groupId/likes - 그룹 추천
 router.patch("/:groupId/likes", async (req, res, next) => {
   try {
-    const { gruopId } = req.body;
+    const { gruopId } = req.params;
     if (!gruopId) {
       throw new BadRequestError("ID는 필수");
     }
@@ -79,7 +79,7 @@ router.patch("/:groupId/likes", async (req, res, next) => {
 // DELETE /groups/:groupId/likes - 그룹 추천 취소
 router.delete("/:groupId/likes", async (req, res, next) => {
   try {
-    const { gruopId } = req.body;
+    const { gruopId } = req.params;
     if (!gruopId) {
       throw new BadRequestError("ID는 필수");
     }
