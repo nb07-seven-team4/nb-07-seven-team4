@@ -29,9 +29,7 @@ export class Group {
       createdAt, 
       updatedAt
     };
-    validateArticleInfo(info);
-    // 출입국 심사... imigration입니다...
-
+    
     return new Group( info.id, info.name, info.description, info.nidckname, info.password, info.image, info.tags, info.targetCount, info.discordWebhookUrl, info.discordInviteUrl, info.createdAt, info.updatedAt);
   }
 }
