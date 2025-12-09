@@ -1,15 +1,20 @@
-const express = require('express');
-const router = express.Router({ mergeParams: true });
-const prisma = require('../prismaClient');
+import { Router } from 'express';
+//group controller 통해서 가져올 데이터
+import GroupController from '../controllers/GroupController.js';
 
-// GET /groups/:groupId/rank - 그룹 랭킹 조회
-router.get('/', async (req, res, next) => {
-  try {
-    // TODO: 구현 예정 (Member 4 - 김민기)
-    res.status(501).json({ message: 'Not implemented yet' });
-  } catch (error) {
-    next(error);
-  }
-});
+const router = Router();
+const controller = new GroupController();
 
-module.exports = router;
+// 그룹 생성
+router.post('/', controller.createGroup);
+
+// 전체 그룹 목록 조회
+router.get('/', controller.getAllGroups);
+
+// 특정 그룹 조회
+router.get('/:groupId', controller.getGroupById);
+
+// 그룹 추천수 증가
+router.patch('/:groupId/recommend', controller.incrementRecommend);
+
+export default router;
