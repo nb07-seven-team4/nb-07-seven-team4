@@ -1,15 +1,14 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+//가져올 사용자 데이터
+import ParticipantController from '../controllers/ParticipantController.js';
 
-// POST /images - 이미지 파일 업로드
-router.post('/', async (req, res, next) => {
-  try {
-    // TODO: 구현 예정 (Member 4 - 김민기)
-    // 이미지 업로드 로직 (multer, cloudinary 등)
-    res.status(501).json({ message: 'Not implemented yet' });
-  } catch (error) {
-    next(error);
-  }
-});
+// 그룹 참여자 가입 user id
+router.post('/', controller.joinGroup);
 
-module.exports = router;
+// 그룹 참여자 목록 조회 // group -> users
+router.get('/', controller.getParticipants);
+
+// 참여자 인증 (예: 비밀번호 검증) // user id로 대체되는가?
+router.post('/verify', controller.verifyParticipant);
+
+export default router;
