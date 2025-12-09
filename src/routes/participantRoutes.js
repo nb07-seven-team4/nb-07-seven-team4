@@ -1,8 +1,8 @@
-const express = require("express");
+import express from "express";
+import prisma from ("../prismaClient");
+import {AppError} from ("../utils/errors.js");
+import { BadRequestError } from ("../utils/errors.js");
 const router = express.Router({ mergeParams: true });
-const prisma = require("../prismaClient");
-const AppError = require("../errors.js");
-const { BadRequestError } = require("../utils/errors.js");
 
 // POST /groups/:groupId/participants - 그룹 참여
 router.post("/:groupId/join", async (req, res, next) => {

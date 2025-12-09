@@ -1,11 +1,11 @@
 /**
  * 커스텀 에러 클래스
  */
-class AppError extends Error {
+export class AppError extends Error {
   constructor(message, statusCode = 500) {
     super(message);
     this.statusCode = statusCode;
-    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+    this.status = `${statusCode}`.startsWith("4") ? "fail" : "error";
     this.isOperational = true;
 
     Error.captureStackTrace(this, this.constructor);
@@ -15,26 +15,26 @@ class AppError extends Error {
 /**
  * 자주 사용하는 에러들
  */
-class NotFoundError extends AppError {
-  constructor(resource = 'Resource') {
+export class NotFoundError extends AppError {
+  constructor(resource = "Resource") {
     super(`${resource} not found`, 404);
   }
 }
 
-class BadRequestError extends AppError {
-  constructor(message = 'Bad request') {
+export class BadRequestError extends AppError {
+  constructor(message = "Bad request") {
     super(message, 400);
   }
 }
 
-class UnauthorizedError extends AppError {
-  constructor(message = 'Unauthorized') {
+export class UnauthorizedError extends AppError {
+  constructor(message = "Unauthorized") {
     super(message, 401);
   }
 }
 
-class ForbiddenError extends AppError {
-  constructor(message = 'Forbidden') {
+export class ForbiddenError extends AppError {
+  constructor(message = "Forbidden") {
     super(message, 403);
   }
 }

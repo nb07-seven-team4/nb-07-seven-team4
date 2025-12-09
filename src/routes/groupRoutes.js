@@ -1,8 +1,7 @@
-const express = require("express");
-const router = express.Router();
-const prisma = require("../prismaClient");
-const AppError = require("../errors.js");
-
+import express from "express";
+import prisma from ("../prismaClient");
+import {AppError} from ("../utils/errors.js");
+const router = express.Router({ mergeParams: true });
 // POST /groups - 그룹 생성
 router.post("/", async (req, res, next) => {
   try {
