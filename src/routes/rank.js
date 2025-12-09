@@ -13,7 +13,7 @@ export class Rank {
       participantId: entity.id?.toString(),
       nickname: entity.nickname,
       totalScore,
-      rank
+      rank,
     };
 
     return new Rank(
@@ -23,6 +23,4 @@ export class Rank {
       info.rank
     );
   }
-
-
 }
