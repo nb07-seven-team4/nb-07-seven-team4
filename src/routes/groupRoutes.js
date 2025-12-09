@@ -65,7 +65,7 @@ router.patch("/:groupId/likes", async (req, res, next) => {
         id: gruopId,
       },
       data: {
-        recommendCount: {
+        recommendations: {
           increment: 1,
         },
       },
@@ -88,7 +88,7 @@ router.delete("/:groupId/likes", async (req, res, next) => {
         id: gruopId,
       },
       data: {
-        recommendCount: {
+        recommendations: {
           decrement: 1,
         },
       },
