@@ -1,4 +1,4 @@
-// src/models/rank.js
+// src/routes/rank.js
 export class Rank {
   constructor(participantId, nickname, totalScore, rank) {
     this.participantId = participantId;
@@ -20,12 +20,22 @@ export class Rank {
   // JSON 응답 포맷
   toJSON() {
     return {
-      participantId: this.participantId,
+      participantId: this.participantId?.toString(),
       nickname: this.nickname,
       totalScore: this.totalScore,
       rank: this.rank,
     };
   }
+
+  toInfo() {
+    return {
+      id: this.participantId?.toString(),
+      nickname: this.nickname,
+      totalScore: this.totalScore,
+      rank: this.rank,
+    };
+  }
+
 
   //유효성- 계산결과값이라서 유효성 검사 불필요?
 }
