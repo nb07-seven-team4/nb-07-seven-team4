@@ -175,6 +175,61 @@ git commit -m "fix: conflict resolved"
 git push
 ```
 
+```
+`1d4c66014a0772cd963a1bcdb3b61179eaf34aa0` **이 커밋으로 되돌아가는 방법**은 두 가지가 있어.
+"완전 되돌리기"인지, "당장 워킹 디렉토리만 돌리기"인지에 따라 달라!
+
+---
+
+# ✅ **1) 해당 커밋 상태로 완전히 되돌리고 싶으면 (HARD RESET)**
+
+⚠️ *로컬의 변경사항과 이후 커밋들이 사라짐 (주의!)*
+
+```bash
+git reset --hard 1d4c66014a0772cd963a1bcdb3b61179eaf34aa0
+```
+
+그리고 원격에도 강제로 밀어야 하면:
+
+```bash
+git push origin HEAD --force
+```
+
+---
+
+# ✅ **2) 해당 커밋 상태만 참고하고 싶고, 이후 커밋은 지우고 싶지 않으면 (checkout)**
+
+과거 상태만 잠깐 보고 싶을 때:
+
+```bash
+git checkout 1d4c66014a0772cd963a1bcdb3b61179eaf34aa0
+```
+
+⚠️ 이 상태는 **detached HEAD**라서 새 작업을 하려면 브랜치를 새로 따야 해:
+
+```bash
+git switch -c temp-rollback
+```
+
+---
+
+# ✅ **3) 특정 커밋으로 되돌리는 새 커밋을 만들고 싶으면 (revert)**
+
+히스토리는 보존하면서 되돌리고 싶을 때:
+
+```bash
+예시 - 1d4c66014a0772cd963a1bcdb3b61179eaf34aa0
+<img width="470" height="133" alt="image" src="https://github.com/user-attachments/assets/7039d6f6-42cb-4a7a-be70-d21b66ff87ea" />
+
+git revert 1d4c66014a0772cd963a1bcdb3b61179eaf34aa0
+```
+
+이 방식은 협업 시 가장 안전
+
+---
+
+
+```
 ---
 </details>
 
@@ -257,5 +312,6 @@ postgresql docs - https://www.postgresql.org/docs/current/
 이지산 - https://github.com/jisan-lee
 
 김민기 - https://github.com/mimgggg4444
+
 
 
