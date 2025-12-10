@@ -48,11 +48,12 @@ const asyncHandler = (fn) => {
   };
 };
 
-module.exports = {
-  AppError,
-  NotFoundError,
-  BadRequestError,
-  UnauthorizedError,
-  ForbiddenError,
-  asyncHandler,
-};
+// module은 esm이 아니라서 충돌일으켜서 임시주석처림
+// module.exports = {
+//   AppError,
+//   NotFoundError,
+//   BadRequestError,
+//   UnauthorizedError,
+//   ForbiddenError,
+//   asyncHandler,
+// };
