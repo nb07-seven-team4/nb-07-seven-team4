@@ -1,3 +1,4 @@
+//rank-img-test-seed용 입니다.
 import { prisma } from "./prisma.js";
 
 
