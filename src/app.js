@@ -2,6 +2,11 @@ import express from "express";
 import * as dotenv from "dotenv";
 dotenv.config();
 
+// BigInt 직렬화 처리 (JSON 응답용)
+BigInt.prototype.toJSON = function() {
+  return this.toString();
+};
+
 const cors = require("cors");
 const app = express();
 
