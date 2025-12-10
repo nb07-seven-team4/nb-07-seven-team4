@@ -6,7 +6,7 @@ import { prisma } from "./lib/prisma";  // prisma client import
 dotenv.config();
 
 // BigInt 직렬화 처리 (맨 위에 추가!)
-BigInt.prototype.toJSON = function() {
+BigInt.prototype.toJSON = function () {
   return this.toString();
 };
 

@@ -1,11 +1,9 @@
 import express from "express";
 import { upload } from "./multer.js";
 import { BadRequestError, NotFoundError } from "../utils/errors.js";
-
 import { promises as fs } from "fs";
 import path from "path";
 import prisma from "../prismaClient.js";
-
 
 const router = express.Router({ mergeParams: true });
 
