@@ -1,0 +1,171 @@
+### 그룹/기록 검색 및 페이지네이션 테스트
+### REST Client를 사용한 API 테스트 파일
+
+# 변수 설정
+@baseUrl = http://localhost:3000
+@groupId = 1
+
+################################################################################
+# 그룹(Group) API 테스트
+################################################################################
+
+### 1. 그룹 생성 (POST)
+POST {{baseUrl}}/groups
+Content-Type: application/json
+
+{
+  "name": "테스트용",
+  "description": "매일 아침 6시에 모여서 달립니다",
+  "nickname": "러닝맨",
+  "password": "test1234",
+  "image": "https://example.com/running.jpg",
+  "tags": ["러닝", "아침", "헬스"],
+  "targetCount": 100,
+  "discordWebhookUrl": "https://discord.com/webhook/123",
+  "discordInviteUrl": "https://discord.gg/abc123"
+}
+
+### 2. 그룹 목록 조회 - 기본 (GET)
+GET {{baseUrl}}/groups
+
+### 3. 그룹 목록 조회 - 페이지네이션 (1페이지, 10개씩)
+GET {{baseUrl}}/groups?page=1&limit=10
+
+### 4. 그룹 목록 조회 - 페이지네이션 (2페이지, 5개씩)
+GET {{baseUrl}}/groups?page=2&limit=5
+
+### 5. 그룹 검색 - 텍스트 검색 (그룹명, 설명, 닉네임)
+GET {{baseUrl}}/groups?search=러닝
+
+### 6. 그룹 검색 - 태그 필터
+GET {{baseUrl}}/groups?tag=헬스
+
+### 7. 그룹 정렬 - 추천수 많은 순
+GET {{baseUrl}}/groups?sortBy=recommendations&order=desc
+
+### 8. 그룹 정렬 - 이름 오름차순
+GET {{baseUrl}}/groups?sortBy=name&order=asc
+
+### 9. 그룹 정렬 - 최신순
+GET {{baseUrl}}/groups?sortBy=createdAt&order=desc
+
+### 10. 그룹 복합 검색 (검색 + 페이지네이션 + 정렬)
+GET {{baseUrl}}/groups?search=운동&page=1&limit=5&sortBy=recommendations&order=desc
+
+### 11. 그룹 복합 검색 (태그 + 페이지네이션 + 정렬)
+GET {{baseUrl}}/groups?tag=러닝&page=1&limit=10&sortBy=createdAt&order=desc
+
+### 12. 그룹 상세 조회 (GET)
+GET {{baseUrl}}/groups/3
+
+### 13. 그룹 수정 (PATCH)
+PATCH {{baseUrl}}/groups/3
+Content-Type: application/json
+
+{
+  "name": "hi",
+  "description": "수정된 내용",
+  "targetCount": 15000
+}
+
+### 14. 그룹 추천 (PATCH)
+PATCH {{baseUrl}}/groups/3/likes
+
+### 15. 그룹 추천 취소 (DELETE)
+DELETE {{baseUrl}}/groups/3/likes
+
+### 16. 그룹 삭제 (DELETE) 삭제되었을경우 응답로직 안되어있음->invalid prisma.group.delete / 실제 잇는값했을경우 삭제되네 msg없음 추가?
+DELETE {{baseUrl}}/groups/1
+
+################################################################################
+# 기록(Record) API 테스트
+################################################################################
+
+### 17. 운동 기록 생성 (POST)
+POST {{baseUrl}}/groups/17/records
+Content-Type: application/json
+
+{
+  "exerciseType": "러닝",
+  "description": "아침 조깅 5km 완주",
+  "duration": 300,
+  "distance": 500,
+  "images": ["de207a31-ab06-4e06-b53d-a5c98d38c2dd.jpg"]
+}
+
+### 18. 운동 기록 목록 조회 - 기본 (GET)
+GET {{baseUrl}}/groups/{{groupId}}/records
+
+### 19. 운동 기록 목록 조회 - 페이지네이션 (1페이지, 10개씩)
+GET {{baseUrl}}/groups/{{groupId}}/records?page=1&limit=10
+
+### 20. 운동 기록 목록 조회 - 페이지네이션 (2페이지, 5개씩)
+GET {{baseUrl}}/groups/{{groupId}}/records?page=2&limit=5
+
+### 21. 운동 기록 검색 - 텍스트 검색 (운동 종류, 설명)
+GET {{baseUrl}}/groups/{{groupId}}/records?search=러닝
+
+### 22. 운동 기록 검색 - 운동 종류 필터
+GET {{baseUrl}}/groups/{{groupId}}/records?exerciseType=러닝
+
+### 23. 운동 기록 검색 - 참여자 닉네임 필터
+GET {{baseUrl}}/groups/{{groupId}}/records?participantNickname=홍길동
+
+### 24. 운동 기록 정렬 - 최신순
+GET {{baseUrl}}/groups/{{groupId}}/records?sortBy=createdAt&order=desc
+
+### 25. 운동 기록 정렬 - 운동 시간 긴 순
+GET {{baseUrl}}/groups/{{groupId}}/records?sortBy=duration&order=desc
+
+### 26. 운동 기록 정렬 - 거리 긴 순
+GET {{baseUrl}}/groups/{{groupId}}/records?sortBy=distance&order=desc
+
+### 27. 운동 기록 복합 검색 (검색 + 페이지네이션 + 정렬)
+GET {{baseUrl}}/groups/{{groupId}}/records?search=아침&page=1&limit=5&sortBy=distance&order=desc
+
+### 28. 운동 기록 복합 검색 (운동 종류 + 참여자 + 정렬)
+GET {{baseUrl}}/groups/{{groupId}}/records?exerciseType=러닝&participantNickname=홍길동&sortBy=createdAt&order=desc
+
+### 29. 운동 기록 상세 조회 (GET)
+@recordId = 1
+GET {{baseUrl}}/groups/{{groupId}}/records/{{recordId}}
+
+################################################################################
+# 엣지 케이스 테스트
+################################################################################
+
+### 30. 페이지 번호가 없는 경우 (기본값 1)
+GET {{baseUrl}}/groups?limit=5
+
+### 31. limit이 없는 경우 (기본값 10)
+GET {{baseUrl}}/groups?page=1
+
+### 32. 페이지 번호가 범위를 초과하는 경우
+GET {{baseUrl}}/groups?page=999&limit=10
+
+### 33. 빈 검색어
+GET {{baseUrl}}/groups?search=
+
+### 34. 존재하지 않는 태그
+GET {{baseUrl}}/groups?tag=존재하지않는태그
+
+### 35. limit이 매우 큰 경우
+GET {{baseUrl}}/groups?page=1&limit=100
+
+################################################################################
+# 성능 테스트용 - 여러 조건 조합
+################################################################################
+
+### 36. 최대 조건 조합 테스트 1
+GET {{baseUrl}}/groups?search=운동&tag=헬스&page=1&limit=20&sortBy=recommendations&order=desc
+
+### 37. 최대 조건 조합 테스트 2
+GET {{baseUrl}}/groups/{{groupId}}/records?search=러닝&exerciseType=러닝&participantNickname=홍길동&page=1&limit=10&sortBy=distance&order=desc
+
+################################################################################
+# 사용 방법:
+# 1. VSCode에서 REST Client 확장 설치
+# 2. 파일 상단의 @baseUrl과 @groupId 변수를 환경에 맞게 수정
+# 3. 각 요청 위의 "Send Request" 클릭하여 테스트
+# 4. 응답을 확인하여 페이지네이션 및 검색 기능 동작 검증
+################################################################################
