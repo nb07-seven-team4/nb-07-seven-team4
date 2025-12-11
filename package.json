@@ -4,7 +4,6 @@
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "multer": "^2.0.2",
     "pg": "^8.16.3"
@@ -12,6 +11,27 @@
   "devDependencies": {
     "@types/node": "^24.10.2",
     "@types/pg": "^8.15.6",
+    "dotenv": "^17.2.3",
+    "dotenv-cli": "^11.0.0",
     "prisma": "^7.1.0"
-  }
+  },
+  "name": "seven",
+  "version": "1.0.0",
+  "description": "[맨 아래로](#bottom)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nb07-seven-team4/nb-07-seven-team4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nb07-seven-team4/nb-07-seven-team4/issues"
+  },
+  "homepage": "https://github.com/nb07-seven-team4/nb-07-seven-team4#readme"
 }

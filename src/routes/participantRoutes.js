@@ -30,6 +30,7 @@ router.post("/:groupId/join", async (req, res, next) => {
       data: {
         groupId: idToNum,
         nickname: nickname,
+        password: password,
       },
     });
     res.status(201).json({
