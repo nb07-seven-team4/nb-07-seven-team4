@@ -77,7 +77,8 @@ app.use((err, req, res, next) => {
 app.use((err, req, res, next) => {
   console.error("Error:", err);
 
-  res.status(err.status || 500).json({
+  //Express의 res.status()는 숫자만 받아서 statusCode로 수정함 / 
+  res.status(err.statusCode || 500).json({
     error: err.message || "Internal Server Error",
     ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
   });
