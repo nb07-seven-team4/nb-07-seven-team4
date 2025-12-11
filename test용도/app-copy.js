@@ -31,7 +31,7 @@ app.use("/groups", groupRoutes);
 // app.use("/groups/:groupId/participants", participantRoutes);
 app.use("/groups/:groupId/records", recordRoutes);
 /**
- * rank및 img기능확인 위한 위의 30,31,32 주석화 하였습니다.
+ * rank및 img기능확인 위한 위의 30,31,32 주석화 하였습니다. // 테스트 위한 주석 해제
 */
 app.use("/groups/:groupId/rank", rankRoutes);
 app.use("/images", imageRoutes);

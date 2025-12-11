@@ -77,14 +77,13 @@ export const GroupScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  nickname: 'nickname',
-  password: 'password',
-  image: 'image',
+  photoUrl: 'photoUrl',
   tags: 'tags',
-  targetCount: 'targetCount',
+  goalRep: 'goalRep',
   discordWebhookUrl: 'discordWebhookUrl',
   discordInviteUrl: 'discordInviteUrl',
-  recommendations: 'recommendations',
+  likeCount: 'likeCount',
+  ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -96,6 +95,7 @@ export const ParticipantScalarFieldEnum = {
   id: 'id',
   nickname: 'nickname',
   password: 'password',
+  isOwner: 'isOwner',
   groupId: 'groupId',
   joinedAt: 'joinedAt'
 } as const
@@ -105,9 +105,9 @@ export type ParticipantScalarFieldEnum = (typeof ParticipantScalarFieldEnum)[key
 
 export const RecordScalarFieldEnum = {
   id: 'id',
-  exerciseType: 'exerciseType',
+  type: 'type',
   description: 'description',
-  duration: 'duration',
+  time: 'time',
   distance: 'distance',
   images: 'images',
   createdAt: 'createdAt',

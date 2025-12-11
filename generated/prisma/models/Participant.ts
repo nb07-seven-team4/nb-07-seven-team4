@@ -40,6 +40,7 @@ export type ParticipantMinAggregateOutputType = {
   id: bigint | null
   nickname: string | null
   password: string | null
+  isOwner: boolean | null
   groupId: bigint | null
   joinedAt: Date | null
 }
@@ -48,6 +49,7 @@ export type ParticipantMaxAggregateOutputType = {
   id: bigint | null
   nickname: string | null
   password: string | null
+  isOwner: boolean | null
   groupId: bigint | null
   joinedAt: Date | null
 }
@@ -56,6 +58,7 @@ export type ParticipantCountAggregateOutputType = {
   id: number
   nickname: number
   password: number
+  isOwner: number
   groupId: number
   joinedAt: number
   _all: number
@@ -76,6 +79,7 @@ export type ParticipantMinAggregateInputType = {
   id?: true
   nickname?: true
   password?: true
+  isOwner?: true
   groupId?: true
   joinedAt?: true
 }
@@ -84,6 +88,7 @@ export type ParticipantMaxAggregateInputType = {
   id?: true
   nickname?: true
   password?: true
+  isOwner?: true
   groupId?: true
   joinedAt?: true
 }
@@ -92,6 +97,7 @@ export type ParticipantCountAggregateInputType = {
   id?: true
   nickname?: true
   password?: true
+  isOwner?: true
   groupId?: true
   joinedAt?: true
   _all?: true
@@ -187,6 +193,7 @@ export type ParticipantGroupByOutputType = {
   id: bigint
   nickname: string
   password: string
+  isOwner: boolean
   groupId: bigint
   joinedAt: Date
   _count: ParticipantCountAggregateOutputType | null
@@ -218,6 +225,7 @@ export type ParticipantWhereInput = {
   id?: Prisma.BigIntFilter<"Participant"> | bigint | number
   nickname?: Prisma.StringFilter<"Participant"> | string
   password?: Prisma.StringFilter<"Participant"> | string
+  isOwner?: Prisma.BoolFilter<"Participant"> | boolean
   groupId?: Prisma.BigIntFilter<"Participant"> | bigint | number
   joinedAt?: Prisma.DateTimeFilter<"Participant"> | Date | string
   group?: Prisma.XOR<Prisma.GroupScalarRelationFilter, Prisma.GroupWhereInput>
@@ -228,6 +236,7 @@ export type ParticipantOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   nickname?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  isOwner?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   joinedAt?: Prisma.SortOrder
   group?: Prisma.GroupOrderByWithRelationInput
@@ -242,6 +251,7 @@ export type ParticipantWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ParticipantWhereInput | Prisma.ParticipantWhereInput[]
   nickname?: Prisma.StringFilter<"Participant"> | string
   password?: Prisma.StringFilter<"Participant"> | string
+  isOwner?: Prisma.BoolFilter<"Participant"> | boolean
   groupId?: Prisma.BigIntFilter<"Participant"> | bigint | number
   joinedAt?: Prisma.DateTimeFilter<"Participant"> | Date | string
   group?: Prisma.XOR<Prisma.GroupScalarRelationFilter, Prisma.GroupWhereInput>
@@ -252,6 +262,7 @@ export type ParticipantOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   nickname?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  isOwner?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   joinedAt?: Prisma.SortOrder
   _count?: Prisma.ParticipantCountOrderByAggregateInput
@@ -268,6 +279,7 @@ export type ParticipantScalarWhereWithAggregatesInput = {
   id?: Prisma.BigIntWithAggregatesFilter<"Participant"> | bigint | number
   nickname?: Prisma.StringWithAggregatesFilter<"Participant"> | string
   password?: Prisma.StringWithAggregatesFilter<"Participant"> | string
+  isOwner?: Prisma.BoolWithAggregatesFilter<"Participant"> | boolean
   groupId?: Prisma.BigIntWithAggregatesFilter<"Participant"> | bigint | number
   joinedAt?: Prisma.DateTimeWithAggregatesFilter<"Participant"> | Date | string
 }
@@ -276,6 +288,7 @@ export type ParticipantCreateInput = {
   id?: bigint | number
   nickname: string
   password: string
+  isOwner?: boolean
   joinedAt?: Date | string
   group: Prisma.GroupCreateNestedOneWithoutParticipantsInput
   records?: Prisma.RecordCreateNestedManyWithoutParticipantInput
@@ -285,6 +298,7 @@ export type ParticipantUncheckedCreateInput = {
   id?: bigint | number
   nickname: string
   password: string
+  isOwner?: boolean
   groupId: bigint | number
   joinedAt?: Date | string
   records?: Prisma.RecordUncheckedCreateNestedManyWithoutParticipantInput
@@ -294,6 +308,7 @@ export type ParticipantUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   group?: Prisma.GroupUpdateOneRequiredWithoutParticipantsNestedInput
   records?: Prisma.RecordUpdateManyWithoutParticipantNestedInput
@@ -303,6 +318,7 @@ export type ParticipantUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   groupId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   records?: Prisma.RecordUncheckedUpdateManyWithoutParticipantNestedInput
@@ -312,6 +328,7 @@ export type ParticipantCreateManyInput = {
   id?: bigint | number
   nickname: string
   password: string
+  isOwner?: boolean
   groupId: bigint | number
   joinedAt?: Date | string
 }
@@ -320,6 +337,7 @@ export type ParticipantUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -327,6 +345,7 @@ export type ParticipantUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   groupId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -350,6 +369,7 @@ export type ParticipantCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   nickname?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  isOwner?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   joinedAt?: Prisma.SortOrder
 }
@@ -363,6 +383,7 @@ export type ParticipantMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   nickname?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  isOwner?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   joinedAt?: Prisma.SortOrder
 }
@@ -371,6 +392,7 @@ export type ParticipantMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   nickname?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  isOwner?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   joinedAt?: Prisma.SortOrder
 }
@@ -427,6 +449,10 @@ export type ParticipantUncheckedUpdateManyWithoutGroupNestedInput = {
   deleteMany?: Prisma.ParticipantScalarWhereInput | Prisma.ParticipantScalarWhereInput[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type ParticipantCreateNestedOneWithoutRecordsInput = {
   create?: Prisma.XOR<Prisma.ParticipantCreateWithoutRecordsInput, Prisma.ParticipantUncheckedCreateWithoutRecordsInput>
   connectOrCreate?: Prisma.ParticipantCreateOrConnectWithoutRecordsInput
@@ -445,6 +471,7 @@ export type ParticipantCreateWithoutGroupInput = {
   id?: bigint | number
   nickname: string
   password: string
+  isOwner?: boolean
   joinedAt?: Date | string
   records?: Prisma.RecordCreateNestedManyWithoutParticipantInput
 }
@@ -453,6 +480,7 @@ export type ParticipantUncheckedCreateWithoutGroupInput = {
   id?: bigint | number
   nickname: string
   password: string
+  isOwner?: boolean
   joinedAt?: Date | string
   records?: Prisma.RecordUncheckedCreateNestedManyWithoutParticipantInput
 }
@@ -490,6 +518,7 @@ export type ParticipantScalarWhereInput = {
   id?: Prisma.BigIntFilter<"Participant"> | bigint | number
   nickname?: Prisma.StringFilter<"Participant"> | string
   password?: Prisma.StringFilter<"Participant"> | string
+  isOwner?: Prisma.BoolFilter<"Participant"> | boolean
   groupId?: Prisma.BigIntFilter<"Participant"> | bigint | number
   joinedAt?: Prisma.DateTimeFilter<"Participant"> | Date | string
 }
@@ -498,6 +527,7 @@ export type ParticipantCreateWithoutRecordsInput = {
   id?: bigint | number
   nickname: string
   password: string
+  isOwner?: boolean
   joinedAt?: Date | string
   group: Prisma.GroupCreateNestedOneWithoutParticipantsInput
 }
@@ -506,6 +536,7 @@ export type ParticipantUncheckedCreateWithoutRecordsInput = {
   id?: bigint | number
   nickname: string
   password: string
+  isOwner?: boolean
   groupId: bigint | number
   joinedAt?: Date | string
 }
@@ -530,6 +561,7 @@ export type ParticipantUpdateWithoutRecordsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   group?: Prisma.GroupUpdateOneRequiredWithoutParticipantsNestedInput
 }
@@ -538,6 +570,7 @@ export type ParticipantUncheckedUpdateWithoutRecordsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   groupId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -546,6 +579,7 @@ export type ParticipantCreateManyGroupInput = {
   id?: bigint | number
   nickname: string
   password: string
+  isOwner?: boolean
   joinedAt?: Date | string
 }
 
@@ -553,6 +587,7 @@ export type ParticipantUpdateWithoutGroupInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   records?: Prisma.RecordUpdateManyWithoutParticipantNestedInput
 }
@@ -561,6 +596,7 @@ export type ParticipantUncheckedUpdateWithoutGroupInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   records?: Prisma.RecordUncheckedUpdateManyWithoutParticipantNestedInput
 }
@@ -569,6 +605,7 @@ export type ParticipantUncheckedUpdateManyWithoutGroupInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -607,6 +644,7 @@ export type ParticipantSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   id?: boolean
   nickname?: boolean
   password?: boolean
+  isOwner?: boolean
   groupId?: boolean
   joinedAt?: boolean
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
@@ -618,6 +656,7 @@ export type ParticipantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   nickname?: boolean
   password?: boolean
+  isOwner?: boolean
   groupId?: boolean
   joinedAt?: boolean
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
@@ -627,6 +666,7 @@ export type ParticipantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   nickname?: boolean
   password?: boolean
+  isOwner?: boolean
   groupId?: boolean
   joinedAt?: boolean
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
@@ -636,11 +676,12 @@ export type ParticipantSelectScalar = {
   id?: boolean
   nickname?: boolean
   password?: boolean
+  isOwner?: boolean
   groupId?: boolean
   joinedAt?: boolean
 }
 
-export type ParticipantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nickname" | "password" | "groupId" | "joinedAt", ExtArgs["result"]["participant"]>
+export type ParticipantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nickname" | "password" | "isOwner" | "groupId" | "joinedAt", ExtArgs["result"]["participant"]>
 export type ParticipantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
   records?: boolean | Prisma.Participant$recordsArgs<ExtArgs>
@@ -663,6 +704,7 @@ export type $ParticipantPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: bigint
     nickname: string
     password: string
+    isOwner: boolean
     groupId: bigint
     joinedAt: Date
   }, ExtArgs["result"]["participant"]>
@@ -1093,6 +1135,7 @@ export interface ParticipantFieldRefs {
   readonly id: Prisma.FieldRef<"Participant", 'BigInt'>
   readonly nickname: Prisma.FieldRef<"Participant", 'String'>
   readonly password: Prisma.FieldRef<"Participant", 'String'>
+  readonly isOwner: Prisma.FieldRef<"Participant", 'Boolean'>
   readonly groupId: Prisma.FieldRef<"Participant", 'BigInt'>
   readonly joinedAt: Prisma.FieldRef<"Participant", 'DateTime'>
 }
