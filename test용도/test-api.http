@@ -1,0 +1,201 @@
+### REST Client를 사용한 API 테스트 파일
+### VSCode의 REST Client 확장을 설치하면 이 파일에서 직접 테스트 가능합니다
+# 설치후 껏다 키면 get같은 코드위에 send request보이는데이거누르면 확인 가능합니다.
+# express가 실행되고 있는 상태에서 밑의 포트도 확인하고 나서 하면 됩니다
+
+# ============================================
+# 변수 설정 (테스트할 값으로 수정하세요)
+# ============================================
+@baseUrl = http://localhost:3000
+@groupId = 1
+@recordId = 1
+@filename = 업로드후-받은-파일명.jpg
+
+###############################################
+# 1. Health Check
+###############################################
+
+### 1-1. 서버 상태 확인
+GET {{baseUrl}}/
+Content-Type: application/json
+
+###############################################
+# 2. Rank 기능 테스트 (랭킹 조회)
+###############################################
+
+### 2-1. 그룹 랭킹 조회 - 정상 케이스
+# 점수 계산: duration(초) + (distance(km) × 15)
+# 예상 결과: runner1(1위), runner2(2위), runner3(3위)
+GET {{baseUrl}}/groups/{{groupId}}/rank
+Content-Type: application/json
+
+
+### . 그룹 1번 랭킹 조회 -> 만약 test-setup.js를 실행했으면 404 not found로 나옴 -> seed.js파일 의해서
+GET {{baseUrl}}/groups/1/rank
+Content-Type: application/json
+
+### 2-2. 그룹 2번 랭킹 조회
+GET {{baseUrl}}/groups/2/rank
+Content-Type: application/json
+
+### 2-3. 그룹 3번 랭킹 조회
+GET {{baseUrl}}/groups/3/rank
+Content-Type: application/json
+
+
+
+### 2-4 
+GET {{baseUrl}}/groups/4/rank
+Content-Type: application/json
+
+
+### 2-4. 존재하지 않는 그룹 랭킹 조회 (에러 케이스)
+# 예상: 404 Not Found - "그룹을 찾을 수 없습니다"
+GET {{baseUrl}}/groups/9999/rank
+Content-Type: application/json
+
+### 2-5. 잘못된 그룹 ID로 랭킹 조회 (에러 케이스)
+# 예상: 400 Bad Request - "ID가 유효하지 않습니다"
+GET {{baseUrl}}/groups/abc/rank
+Content-Type: application/json
+
+###############################################
+# 3. Image 기능 테스트
+###############################################
+
+### 3-1. 이미지 업로드 - 정상 케이스 (JPG)
+# 주의: 실제 이미지 파일 경로를 지정해야 합니다
+POST {{baseUrl}}/images/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="test-image.jpg"
+Content-Type: image/jpeg
+
+< ./test-image.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### 3-2. 이미지 업로드 - PNG 파일 //jpg일 경우 이미지 확인 불가능
+POST {{baseUrl}}/images/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="test-image.png"
+Content-Type: image/png
+
+< ./test-image.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### 3-3. 이미지 업로드 - 파일 없이 요청 (에러 케이스)
+# 예상: 400 Bad Request - "이미지 파일이 필요합니다"
+POST {{baseUrl}}/images/upload
+Content-Type: application/json
+
+### 3-4. 특정 레코드의 이미지 목록 조회 - Record 1
+# 참고: Record에 이미지가 연결되어 있어야 결과가 나옵니다
+GET {{baseUrl}}/images/records/{{recordId}}/images
+Content-Type: application/json
+
+### 3-5. Record 2의 이미지 목록 조회
+GET {{baseUrl}}/images/records/2/images
+Content-Type: application/json
+
+### 3-6. Record 3의 이미지 목록 조회
+GET {{baseUrl}}/images/records/3/images
+Content-Type: application/json
+
+### 3-7. 존재하지 않는 레코드의 이미지 조회 (에러 케이스)
+# 예상: 404 Not Found - "운동 기록을 찾을 수 없습니다"
+GET {{baseUrl}}/images/records/9999/images
+Content-Type: application/json
+
+### 3-8. 잘못된 레코드 ID로 이미지 조회 (에러 케이스) // cannot convert abc to a bigint
+GET {{baseUrl}}/images/records/abc/images
+Content-Type: application/json
+
+### 3-9. 업로드된 이미지 파일에 직접 접근
+# 브라우저에서도 이 URL로 이미지를 볼 수 있습니다
+# uploads에 생성된 전체 파일명을 uploads뒤에 작성
+GET {{baseUrl}}/uploads/de207a31-ab06-4e06-b53d-a5c98d38c2dd.jpg
+
+### 3-10. 이미지 삭제 - 정상 케이스
+# 주의: @filename을 실제 업로드된 파일명으로 변경하세요
+DELETE {{baseUrl}}/images/0d8751b3-62b5-4cfa-9d35-44201fa2a813.png
+Content-Type: application/json
+
+### 3-11. 존재하지 않는 이미지 삭제 (에러 케이스)
+# 예상: 404 Not Found - "이미지를 찾을 수 없습니다"
+DELETE {{baseUrl}}/images/nonexistent-file.jpg
+Content-Type: application/json
+
+###############################################
+# 4. 404 및 에러 테스트
+###############################################
+
+### 4-1. 존재하지 않는 엔드포인트
+# 예상: 404 Not Found
+GET {{baseUrl}}/nonexistent-endpoint
+Content-Type: application/json
+
+### 4-2. 잘못된 HTTP 메서드
+# 예상: 404 Not Found
+PUT {{baseUrl}}/
+Content-Type: application/json
+
+###############################################
+# 5. 통합 시나리오 테스트
+###############################################
+
+### 시나리오 A: 이미지 전체 플로우
+# Step 1: 이미지 업로드
+POST {{baseUrl}}/images/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="flow-test.jpg"
+Content-Type: image/jpeg
+
+< ./test-image.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+# Step 2: 응답에서 filename 복사 후 @filename 변수에 붙여넣기
+# Step 3: 업로드된 파일 확인
+# GET {{baseUrl}}/uploads/{{filename}}
+# Step 4: 파일 삭제
+# DELETE {{baseUrl}}/images/{{filename}}
+
+### 시나리오 B: 여러 그룹 랭킹 비교
+# 위에서 설명 groups는 test-setup.js실행햇을경우 안뜸
+GET {{baseUrl}}/groups/1/rank
+
+###
+GET {{baseUrl}}/groups/2/rank
+
+###
+GET {{baseUrl}}/groups/3/rank
+
+###
+GET {{baseUrl}}/groups/4/rank
+
+###############################################
+# 6. 테스트 가이드
+###############################################
+
+# 📝 추천 테스트 순서:
+# 1. Health Check (1-1) - 서버 확인
+# 2. 그룹 랭킹 조회 (2-1) - 정상 동작 확인
+# 3. 에러 케이스 테스트 (2-4, 2-5) - 예외 처리 확인
+# 4. 이미지 업로드 (3-1) - 파일 업로드 확인
+# 5. 업로드된 파일 확인 (3-9)
+# 6. 레코드 이미지 조회 (3-4)
+# 7. 이미지 삭제 (3-10)
+
+# 💡 유용한 팁:
+# - 이미지 업로드 후 응답의 "filename"을 @filename 변수에 붙여넣으세요
+# - test-setup.js를 먼저 실행하여 테스트 데이터를 생성하세요
+# - 각 요청을 순차적으로 실행하면서 응답을 확인하세요
+
+# 🔧 문제 해결:
+# - "ENOENT" 에러: test-image.jpg 파일이 없습니다
+# - "Connection refused": node src/app.js로 서버를 실행하세요
+# - 이미지 목록이 빈 배열: Record에 이미지가 연결되지 않았습니다
