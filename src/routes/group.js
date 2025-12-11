@@ -3,26 +3,30 @@ export class Group {
     id,
     name,
     description,
-    nidckname,
+    nickname,
     password,
-    image,
+    photoUrl,
     tags,
-    targetCount,
+    goalRep,
     discordWebhookUrl,
     discordInviteUrl,
+    likeCount,
+    ownerId,
     createdAt,
     updatedAt,
   ) {
     this.id = id;
     this.name = name;
     this.description = description;
-    this.nickname = nidckname;
+    this.nickname = nickname;
     this.password = password;
-    this.image = image;
+    this.photoUrl = photoUrl;
     this.tags = tags;
-    this.targetCount = targetCount;
+    this.goalRep = goalRep;
     this.discordWebhookUrl = discordWebhookUrl;
     this.discordInviteUrl = discordInviteUrl;
+    this.likeCount = likeCount;
+    this.ownerId = ownerId;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -33,11 +37,13 @@ export class Group {
     description,
     nickname,
     password,
-    image,
+    photoUrl,
     tags,
-    targetCount,
+    goalRep,
     discordWebhookUrl,
     discordInviteUrl,
+    likeCount,
+    ownerId,
     createdAt,
     updatedAt,
   }) {
@@ -47,11 +53,13 @@ export class Group {
       description,
       nickname,
       password,
-      image,
+      photoUrl,
       tags,
-      targetCount,
+      goalRep,
       discordWebhookUrl,
       discordInviteUrl,
+      likeCount,
+      ownerId: ownerId.toString(),
       createdAt,
       updatedAt,
     };
@@ -60,13 +68,15 @@ export class Group {
       info.id,
       info.name,
       info.description,
-      info.nidckname,
+      info.nickname,
       info.password,
-      info.image,
+      info.photoUrl,
       info.tags,
-      info.targetCount,
+      info.goalRep,
       info.discordWebhookUrl,
       info.discordInviteUrl,
+      info.likeCount,
+      info.ownerId,
       info.createdAt,
       info.updatedAt,
     );
