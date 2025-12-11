@@ -1,23 +1,23 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
-
 model Group {
   id                BigInt         @id @default(autoincrement())
   name              String         @unique
   description       String
   nickname          String
   password          String
-  image             String?
+  image             String
   tags              String[]
   targetCount       Int            @map("target_count")
-  discordWebhookUrl String?        @map("discord_webhook_url")
-  discordInviteUrl  String?        @map("discord_invite_url")
-  recommendations   Int            @default(0)
+  discordWebhookUrl String         @map("discord_webhook_url")
+  discordInviteUrl  String         @map("discord_invite_url")
+  recommendations   Int?           @default(0)
   createdAt         DateTime       @default(now()) @map("created_at")
   updatedAt         DateTime       @updatedAt @map("updated_at")
 

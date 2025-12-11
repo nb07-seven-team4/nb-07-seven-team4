@@ -19,7 +19,7 @@ export function getPaginationParams(page = 1, limit = 10) {
  */
 export function getPaginationMeta(totalCount, page, limit) {
   const totalPages = Math.ceil(totalCount / limit);
-  
+
   return {
     currentPage: page,
     totalPages,
@@ -30,3 +30,7 @@ export function getPaginationMeta(totalCount, page, limit) {
   };
 }
 
+module.exports = {
+  getPaginationParams,
+  getPaginationMeta,
+};

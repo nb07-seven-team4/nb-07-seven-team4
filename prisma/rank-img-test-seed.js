@@ -1,5 +1,6 @@
-// 편집 하셔서 사용바랍니다.
+//rank-img-test-seed용 입니다.
 import { prisma } from "./prisma.js";
+
 
 BigInt.prototype.toJSON = function () {
   return this.toString();
@@ -28,8 +29,8 @@ async function main() {
       targetCount: 50,
       discordWebhookUrl: "https://discord.com/webhook/test",
       discordInviteUrl: "https://discord.gg/test",
-      recommendations: 10,
-    },
+      recommendations: 10
+    }
   });
 
   console.log(`✅ 그룹 생성 완료: ${testGroup.name} (ID: ${testGroup.id})`);
@@ -39,24 +40,24 @@ async function main() {
     data: {
       nickname: "김러너",
       password: "runner1234",
-      groupId: testGroup.id,
-    },
+      groupId: testGroup.id
+    }
   });
 
   const participant2 = await prisma.participant.create({
     data: {
       nickname: "이스프린트",
       password: "sprint1234",
-      groupId: testGroup.id,
-    },
+      groupId: testGroup.id
+    }
   });
 
   const participant3 = await prisma.participant.create({
     data: {
       nickname: "박마라톤",
       password: "marathon1234",
-      groupId: testGroup.id,
-    },
+      groupId: testGroup.id
+    }
   });
 
   console.log(`✅ 참가자 3명 생성 완료`);
@@ -71,8 +72,8 @@ async function main() {
       distance: 5.0, // 5km
       images: [], // 이미지 업로드 테스트에서 추가 예정
       groupId: testGroup.id,
-      participantId: participant1.id,
-    },
+      participantId: participant1.id
+    }
   });
 
   await prisma.record.create({
@@ -83,8 +84,8 @@ async function main() {
       distance: 7.5, // 7.5km
       images: [],
       groupId: testGroup.id,
-      participantId: participant1.id,
-    },
+      participantId: participant1.id
+    }
   });
 
   // 이스프린트 - 1개 기록
@@ -96,8 +97,8 @@ async function main() {
       distance: 10.0, // 10km
       images: [],
       groupId: testGroup.id,
-      participantId: participant2.id,
-    },
+      participantId: participant2.id
+    }
   });
 
   // 박마라톤 - 3개 기록 (최다 점수)
@@ -109,8 +110,8 @@ async function main() {
       distance: 15.0, // 15km
       images: [],
       groupId: testGroup.id,
-      participantId: participant3.id,
-    },
+      participantId: participant3.id
+    }
   });
 
   await prisma.record.create({
@@ -121,8 +122,8 @@ async function main() {
       distance: 6.0, // 6km
       images: [],
       groupId: testGroup.id,
-      participantId: participant3.id,
-    },
+      participantId: participant3.id
+    }
   });
 
   await prisma.record.create({
@@ -133,8 +134,8 @@ async function main() {
       distance: 4.0, // 4km
       images: [],
       groupId: testGroup.id,
-      participantId: participant3.id,
-    },
+      participantId: participant3.id
+    }
   });
 
   // 다른 운동 타입 기록 (랭킹에 포함되지 않음)
@@ -146,8 +147,8 @@ async function main() {
       distance: null,
       images: [],
       groupId: testGroup.id,
-      participantId: participant1.id,
-    },
+      participantId: participant1.id
+    }
   });
 
   console.log(`✅ 운동 기록 7개 생성 완료 (달리기 6개, 웨이트 1개)`);
