@@ -2,7 +2,20 @@ import express from "express";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const cors = require("cors");
+import cors from "cors";
+import multer from "multer";
+
+// import groupRoutes from "./routes/groupRoutes.js";
+// import participantRoutes from "./routes/participantRoutes.js";
+// import recordRoutes from "./routes/recordRoutes.js";
+import rankRoutes from "./routes/rankRoutes.js";
+import imageRoutes from "./routes/imageRoutes.js";
+
+// BigInt → JSON 직렬화
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
+
 const app = express();
 
 // Middleware
@@ -10,17 +23,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-const groupRoutes = require("./routes/groupRoutes");
-const participantRoutes = require("./routes/participantRoutes");
-const recordRoutes = require("./routes/recordRoutes");
-const rankRoutes = require("./routes/rankRoutes");
-const imageRoutes = require("./routes/imageRoutes");
+// 정적 파일 제공
+app.use("/uploads", express.static("uploads"));
 
 // API Routes
-app.use("/groups", groupRoutes);
-app.use("/groups/:groupId/participants", participantRoutes);
-app.use("/groups/:groupId/records", recordRoutes);
+// app.use("/groups", groupRoutes);
+// app.use("/groups/:groupId/participants", participantRoutes);
+// app.use("/groups/:groupId/records", recordRoutes);
+/**
+ * rank및 img기능확인 위한 위의 30,31,32 주석화 하였습니다.
+*/
 app.use("/groups/:groupId/rank", rankRoutes);
 app.use("/images", imageRoutes);
 
@@ -33,12 +45,32 @@ app.get("/", (req, res) => {
   });
 });
 
-// 404 Handler
+// 404 Not Found
 app.use((req, res) => {
   res.status(404).json({
     error: "Not Found",
     message: `Cannot ${req.method} ${req.path}`,
   });
+});
+
+// Multer 에러 처리
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res.status(400).json({
+        error: "파일 크기가 제한을 초과했습니다 (최대 5MB)",
+      });
+    }
+    if (err.code === "LIMIT_UNEXPECTED_FILE") {
+      return res.status(400).json({
+        error: "예상치 못한 파일 필드입니다",
+      });
+    }
+    return res.status(400).json({
+      error: err.message,
+    });
+  }
+  next(err);
 });
 
 // Global Error Handler
@@ -51,6 +83,7 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Server Start
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
@@ -58,12 +91,13 @@ app.listen(PORT, () => {
   ╔════════════════════════════════════════╗
   ║   🏃 SEVEN API Server is running!      ║
   ║                                        ║
-  ║   PORT: ${PORT}                        ║
-  ║   ENV:  ${process.env.NODE_ENV || "development"}              ║
+  ║   PORT: ${PORT}                        
+  ║   ENV:  ${process.env.NODE_ENV || "development"}              
   ║                                        ║
-  ║   http://localhost:${PORT}             ║
+  ║   http://localhost:${PORT}             
   ╚════════════════════════════════════════╝
   `);
 });
 
-module.exports = app;
+// ESM에서 export default
+export default app;
