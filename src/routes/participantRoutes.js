@@ -25,27 +25,65 @@ router.post("/:groupId/join", async (req, res, next) => {
     if (existingParticipant) {
       throw new ConflictError("이미 사용중인 닉네임");
     }
+    const group = await prisma.group.findUnique({
+    where: { id: idToNum },
+});
+
+    if (!group) {
+    throw new NotFoundError("존재하지 않는 그룹 ID입니다.");
+}
 
     const newParticipant = await prisma.participant.create({
       data: {
         groupId: idToNum,
         nickname: nickname,
+        password: password,
       },
     });
-    res.status(201).json({
-      message: "그룹참여",
-      participant: newParticipant,
-    });
+
+    const responseGroupData = await prisma.group.findUnique({
+      where: {id: idToNum},
+      include: {
+        owner: true,
+        participants: true,
+        tags: true,
+        badges: true,
+      },
+    })
+    res.status(201).json(responseGroupData);
   } catch (error) {
     next(error);
   }
 });
 
 // DELETE /groups/:groupId/participants - 그룹 참여 취소
-router.delete("/", async (req, res, next) => {
+router.delete("/:groupId/participants", async (req, res, next) => {
   try {
-    // TODO: 구현 예정 (Member 2 - 이서준)
-    res.status(501).json({ message: "Not implemented yet" });
+    const { groupId } = req.params;
+    const { nickname, password } = req.body;
+    const idToNum = parseInt(groupId, 10);
+    if (isNaN(idToNum)) {
+      throw new BadRequestError("ID가 유효하지 않습니다.");
+    }
+    if (!groupId || !nickname || !password) {
+      throw new BadRequestError("요청이 올바르지 않습니다.");
+    }
+    const existingParticipant = await prisma.participant.findFirst({
+      where: {
+        groupId: idToNum,
+        nickname: nickname,
+        password: password,
+      },
+    });
+    if (!existingParticipant) {
+      throw new NotFoundError("그룹참여자 닉네임이 아닙니다.");
+    }
+    const deleteParticipant = await prisma.participant.delete({
+      where: {
+        id: existingParticipant.id,
+      }
+    })
+    res.status(204).json(noContent);
   } catch (error) {
     next(error);
   }
