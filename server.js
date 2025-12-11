@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { prisma } from "./lib/prisma";  // prisma client import
+import prisma from "./src/prismaClient.js"; // prisma client import
 
 dotenv.config();
 
@@ -22,8 +22,8 @@ app.get("/participants", async (req, res) => {
   try {
     const data = await prisma.participant.findMany({
       include: {
-        group: true
-      }
+        group: true,
+      },
     });
     res.json(data);
   } catch (error) {

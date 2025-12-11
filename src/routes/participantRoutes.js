@@ -25,6 +25,13 @@ router.post("/:groupId/join", async (req, res, next) => {
     if (existingParticipant) {
       throw new ConflictError("이미 사용중인 닉네임");
     }
+    const group = await prisma.group.findUnique({
+    where: { id: idToNum },
+});
+
+    if (!group) {
+    throw new NotFoundError("존재하지 않는 그룹 ID입니다.");
+}
 
     const newParticipant = await prisma.participant.create({
       data: {
@@ -33,10 +40,17 @@ router.post("/:groupId/join", async (req, res, next) => {
         password: password,
       },
     });
-    res.status(201).json({
-      message: "그룹참여",
-      participant: newParticipant,
-    });
+
+    const responseGroupData = await prisma.group.findUnique({
+      where: {id: idToNum},
+      include: {
+        owner: true,
+        participants: true,
+        tags: true,
+        badges: true,
+      },
+    })
+    res.status(201).json(responseGroupData);
   } catch (error) {
     next(error);
   }
