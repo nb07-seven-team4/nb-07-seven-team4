@@ -13,8 +13,6 @@ model Group {
   id                BigInt         @id @default(autoincrement())
   name              String         @unique
   description       String
-  nickname          String
-  password          String
   image             String
   tags              String[]
   targetCount       Int            @map("target_count")
@@ -35,6 +33,7 @@ model Participant {
   id        BigInt   @id @default(autoincrement())
   nickname  String
   password  String
+  isOwner   Boolean  @default(false) @map("is_owner")
   groupId   BigInt   @map("group_id")
   joinedAt  DateTime @default(now()) @map("joined_at")
 
