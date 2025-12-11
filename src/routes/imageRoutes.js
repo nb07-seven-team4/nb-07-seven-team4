@@ -96,6 +96,11 @@ router.get('/records/:recordId/images', async (req, res, next) => {
       throw new BadRequestError('기록 ID가 필요합니다');
     }
 
+    // 숫자 형식 검증 // 없을 경우 cannot convert abc to a bigint 나와서 수정함
+    if (!/^\d+$/.test(recordId)) {
+      throw new BadRequestError('ID가 유효하지 않습니다');
+    }
+
     // bigint 변환 -> 레코id bigint
     const recordIdBigInt = BigInt(recordId);
 
