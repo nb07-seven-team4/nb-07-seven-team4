@@ -2,8 +2,8 @@
 export class Record {
   constructor(
     id,
-    exerciseType,
-    description,
+    type,
+    time,
     duration,
     distance,
     images,
@@ -12,9 +12,9 @@ export class Record {
     participantId
   ) {
     this.id = id;
-    this.exerciseType = exerciseType;
+    this.type = type;
     this.description = description;
-    this.duration = duration;
+    this.time = time;
     this.distance = distance;
     this.images = images;
     this.createdAt = createdAt;
@@ -24,9 +24,9 @@ export class Record {
 
   static fromEntity({
     id,
-    exerciseType,
+    type,
     description,
-    duration,
+    time,
     distance,
     images,
     createdAt,
@@ -35,9 +35,9 @@ export class Record {
   }) {
     const info = {
       id: id.toString(),
-      exerciseType,
+      type,
       description,
-      duration,
+      time,
       distance,
       images,
       createdAt: createdAt,
@@ -48,9 +48,9 @@ export class Record {
     validateRecordInfo(info);
     return new Record(
       info.id,
-      info.exerciseType,
+      info.type,
       info.description,
-      info.duration,
+      info.time,
       info.distance,
       info.images,
       info.createdAt,
@@ -69,8 +69,8 @@ function validateId(id) {
   }
 }
 
-function validateExcerciseType(exerciseType) {
-  if (!exerciseType) {
+function validateType(type) {
+  if (!type) {
     throw new Error("운동 종류를 입력해주세요.");
   }
 }
@@ -83,8 +83,8 @@ function validateDescription(description) {
   }
 }
 
-function validateDuration(duration) {
-  if (!duration || typeof duration !== "number" || duration <= 0) {
+function validateTime(time) {
+  if (!time || typeof time !== "number" || time <= 0) {
     throw new Error("운동 시간은 양수여야 합니다.");
   }
 }
@@ -104,7 +104,7 @@ function validateImages(images) {
     throw new Error("이미지는 배열이어야 합니다.");
   }
   // 각 이미지가 문자열인지 확인
-  if (images.some(img => typeof img !== "string")) {
+  if (images.some((img) => typeof img !== "string")) {
     throw new Error("모든 이미지는 문자열(URL)이어야 합니다.");
   }
 }
@@ -134,9 +134,9 @@ function validateParticipantId(participantId) {
 
 function validateRecordInfo({
   id,
-  exerciseType,
+  type,
   description,
-  duration,
+  time,
   distance,
   images,
   createdAt,
@@ -144,9 +144,9 @@ function validateRecordInfo({
   participantId,
 }) {
   validateId(id);
-  validateExcerciseType(exerciseType);
+  validateType(type);
   validateDescription(description);
-  validateDuration(duration);
+  validateTime(time);
   validateDistance(distance);
   validateImages(images);
   validateCreatedAt(createdAt);
