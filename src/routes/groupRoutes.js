@@ -1,13 +1,22 @@
+//grouproutes.js
+
 import express from "express";
 import prisma from "../prismaClient.js";
 // 추가로 필요한 Error?
 import { BadRequestError, NotFoundError } from "../utils/errors.js";
 // {안에 대문자로 해야하는데 group로 불러오고 있음 아마 group.js 수정 필}} ?????
 import { Group } from "./group.js";
+// 그룹 삭제 시 이미지 파일도 함께 삭제하기 위한 모듈
+import { promises as fs } from "fs";
+import path from "path";
+
 const router = express.Router({ mergeParams: true });
 
 // POST /groups - 그룹 생성
 router.post("/", async (req, res, next) => {
+  // 디버깅: 프론트엔드에서 받은 데이터 확인
+  console.log('[백엔드] 받은 req.body:', JSON.stringify(req.body, null, 2));
+
   // 수정: API 명세에 맞춘 필드명 (photoUrl, goalRep, ownerNickname, ownerPassword)
   const {
     name,
@@ -21,13 +30,35 @@ router.post("/", async (req, res, next) => {
     ownerPassword    // 수정: password → ownerPassword (API 명세 필드명)
   } = req.body;
 
+  // 디버깅: 각 필드 값 확인
+  console.log('[백엔드] 필드 체크:', {
+    name: `"${name}" (${typeof name})`,
+    ownerNickname: `"${ownerNickname}" (${typeof ownerNickname})`,
+    ownerPassword: `"${ownerPassword}" (${typeof ownerPassword})`,
+    photoUrl: `"${photoUrl}" (${typeof photoUrl})`,
+    description: `"${description}" (${typeof description})`,
+    tags: tags,
+    goalRep: `"${goalRep}" (${typeof goalRep})`,
+    discordWebhookUrl: `"${discordWebhookUrl}" (${typeof discordWebhookUrl})`,
+    discordInviteUrl: `"${discordInviteUrl}" (${typeof discordInviteUrl})`
+  });
+
   // 수정: 필수 필드 검증 (API 명세 기준)
-  if (!name || !ownerNickname || !ownerPassword || !photoUrl || !description || !tags || !goalRep || !discordWebhookUrl || !discordInviteUrl) {
+  // 진짜 필수 필드만 검증 (name, ownerNickname, ownerPassword는 반드시 필요)
+  if (!name || !ownerNickname || !ownerPassword) {
     return res.status(400).json({
       path: "body",
-      message: '필수 필드를 모두 입력해주세요'
+      message: '필수 필드를 모두 입력해주세요 (name, ownerNickname, ownerPassword)'
     });
   }
+
+  // 선택 필드에 기본값 설정
+  const finalPhotoUrl = photoUrl || 'https://via.placeholder.com/150'; // 기본 값 이미지
+  const finalDescription = description || '';
+  const finalTags = tags || [];
+  const finalGoalRep = goalRep || 0;
+  const finalDiscordWebhookUrl = discordWebhookUrl || '';
+  const finalDiscordInviteUrl = discordInviteUrl || '';
 
   try {
     // 수정: Group과 Owner(Participant)를 트랜잭션으로 동시에 생성
@@ -36,12 +67,12 @@ router.post("/", async (req, res, next) => {
       const tempGroup = await tx.group.create({
         data: {
           name,
-          description,
-          photoUrl,
-          tags,
-          goalRep,
-          discordWebhookUrl,
-          discordInviteUrl,
+          description: finalDescription,
+          photoUrl: finalPhotoUrl,
+          tags: finalTags,
+          goalRep: finalGoalRep,
+          discordWebhookUrl: finalDiscordWebhookUrl,
+          discordInviteUrl: finalDiscordInviteUrl,
           ownerId: BigInt(0) // 임시값
         }
       });
@@ -170,7 +201,13 @@ router.get("/", async (req, res, next) => {
 
     // 수정: API 명세에 맞춘 응답 데이터 포맷팅
     const formattedGroups = groups.map(group => {
-      const owner = group.participants.find(p => p.isOwner);
+      // isOwner가 true인 참여자를 찾거나, 없으면 ownerId와 일치하는 참여자 찾기
+      let owner = group.participants.find(p => p.isOwner);
+      if (!owner) {
+        // isOwner가 없는 경우 ownerId로 찾기 (기존 데이터 호환)
+        owner = group.participants.find(p => p.id === group.ownerId);
+      }
+
       return {
         id: Number(group.id),
         name: group.name,
@@ -187,7 +224,13 @@ router.get("/", async (req, res, next) => {
           nickname: owner.nickname,
           createdAt: owner.joinedAt.getTime(),
           updatedAt: owner.joinedAt.getTime()
-        } : null,
+        } : {
+          // owner를 찾지 못한 경우 기본값 제공 (에러 방지)
+          id: 0,
+          nickname: 'Unknown',
+          createdAt: group.createdAt.getTime(),
+          updatedAt: group.updatedAt.getTime()
+        },
         participants: group.participants.map(p => ({
           id: Number(p.id),
           nickname: p.nickname,
@@ -233,7 +276,12 @@ router.get("/:groupId", async (req, res, next) => {
     }
 
     // 수정: API 명세에 맞춘 응답 구조 (owner 분리, photoUrl/goalRep 필드명)
-    const owner = group.participants.find(p => p.isOwner);
+    let owner = group.participants.find(p => p.isOwner);
+    if (!owner) {
+      // isOwner가 없는 경우 ownerId로 찾기 (기존 데이터 호환)
+      owner = group.participants.find(p => p.id === group.ownerId);
+    }
+
     const response = {
       id: Number(group.id),
       name: group.name,
@@ -249,7 +297,13 @@ router.get("/:groupId", async (req, res, next) => {
         nickname: owner.nickname,
         createdAt: owner.joinedAt.getTime(),
         updatedAt: owner.joinedAt.getTime()
-      } : null,
+      } : {
+        // owner를 찾지 못한 경우 기본값 제공
+        id: 0,
+        nickname: 'Unknown',
+        createdAt: group.createdAt.getTime(),
+        updatedAt: group.updatedAt.getTime()
+      },
       participants: group.participants.map(p => ({
         id: Number(p.id),
         nickname: p.nickname,
@@ -380,11 +434,14 @@ router.delete("/:groupId", async (req, res, next) => {
     // 수정: API 명세에 따라 body에서 ownerPassword 받기
     const { ownerPassword } = req.body;
 
-    // 수정: 그룹 조회 (owner 인증을 위해)
+    // 수정: 그룹 조회 (owner 인증 + 이미지 파일 수집을 위해 records 포함)
     const group = await prisma.group.findUnique({
       where: { id },
       include: {
-        participants: true
+        participants: true,
+        records: {
+          select: { images: true } // 운동 기록의 이미지 URL만 가져오기
+        }
       }
     });
 
@@ -403,10 +460,52 @@ router.delete("/:groupId", async (req, res, next) => {
       });
     }
 
-    // 수정: 그룹 삭제 (Cascade로 participants, records, badges도 자동 삭제)
+    // ============================================
+    // 그룹 삭제 전 이미지 파일 수집
+    // ============================================
+    const imagesToDelete = [];
+
+    // 1. 그룹 썸네일 이미지 추출
+    if (group.photoUrl) {
+      // URL에서 파일명만 추출 (예: "http://localhost:3000/uploads/uuid.jpg" -> "uuid.jpg")
+      const filename = group.photoUrl.split('/').pop();
+      // placeholder URL이 아니고 실제 파일명인 경우만 삭제 목록에 추가
+      if (filename && !filename.startsWith('http') && !filename.includes('placeholder')) {
+        imagesToDelete.push(filename);
+      }
+    }
+
+    // 2. 운동 기록의 모든 이미지들 추출
+    group.records.forEach(record => {
+      record.images.forEach(imageUrl => {
+        const filename = imageUrl.split('/').pop();
+        if (filename && !filename.startsWith('http') && !filename.includes('placeholder')) {
+          imagesToDelete.push(filename);
+        }
+      });
+    });
+
+    // ============================================
+    // DB에서 그룹 삭제 (Cascade로 participants, records, badges도 자동 삭제)
+    // ============================================
     await prisma.group.delete({
       where: { id }
     });
+
+    // ============================================
+    // 파일 시스템에서 이미지 파일 삭제
+    // ============================================
+    for (const filename of imagesToDelete) {
+      try {
+        const filePath = path.join('uploads', filename);
+        await fs.unlink(filePath);
+        console.log(`✅ 이미지 삭제 성공: ${filename}`);
+      } catch (err) {
+        // 파일이 이미 삭제되었거나 존재하지 않을 수 있으므로 에러 무시
+        // (DB 삭제는 이미 완료되었으므로 계속 진행)
+        console.error(`⚠️ 이미지 삭제 실패 (무시됨): ${filename}`, err.message);
+      }
+    }
 
     res.status(204).end();  // 삭제 성공 (본문 없음)
   } catch (error) {
