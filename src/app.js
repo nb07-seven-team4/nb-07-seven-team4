@@ -1,3 +1,5 @@
+//app.js
+
 import express from "express";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -6,7 +8,7 @@ import cors from "cors";
 import multer from "multer";
 
 import groupRoutes from "./routes/groupRoutes.js";
-// import participantRoutes from "./routes/participantRoutes.js";
+import participantRoutes from "./routes/participantRoutes.js";
 import recordRoutes from "./routes/recordRoutes.js";
 import rankRoutes from "./routes/rankRoutes.js";
 import imageRoutes from "./routes/imageRoutes.js";
@@ -28,11 +30,8 @@ app.use("/uploads", express.static("uploads"));
 
 // API Routes
 app.use("/groups", groupRoutes);
-// app.use("/groups/:groupId/participants", participantRoutes);
+app.use("/groups", participantRoutes);
 app.use("/groups/:groupId/records", recordRoutes);
-/**
- * rank및 img기능확인 위한 위의 30,31,32 주석화 하였습니다.
-*/
 app.use("/groups/:groupId/rank", rankRoutes);
 app.use("/images", imageRoutes);
 

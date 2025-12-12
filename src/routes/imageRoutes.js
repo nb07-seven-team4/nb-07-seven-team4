@@ -8,43 +8,37 @@ import prisma from "../prismaClient.js";
 const router = express.Router({ mergeParams: true });
 
 /**
- * POST /images/upload
- * 이미지 업로드
- * - 단일 이미지 파일을 업로드하고 URL을 반환
- * - 최대 5mb, JPG/PNG/GIF/WEBP app.js에 정의
+ * POST /images
+ * 이미지 업로드 (API 명세서 기준)
+ * - 여러 이미지 파일을 업로드하고 URL 배열을 반환
+ * - Request Body: files (array)
+ * - Response: { urls: ["string"] }
  */
-router.post("/upload", upload.single("image"), async (req, res, next) => {
+router.post('/', upload.array('files', 10), async (req, res, next) => {
   try {
     // 파일이 업로드되지 않은 경우 예외
-    if (!req.file) {
-      throw new BadRequestError("이미지 파일이 필요합니다");
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        message: 'File should be an image file'
+      });
     }
 
-    // 업로드된 파일 정보 가져와서 넣기
-    const { filename, mimetype, size } = req.file;
-
     // URL 생성 (환경변수 우선, fallback으로 req 사용)
-    const baseUrl =
-      process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
-    const imageUrl = `${baseUrl}/uploads/${filename}`;
+    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
 
-    res.status(201).json({
-      message: "이미지 업로드 성공",
-      imageUrl: imageUrl,
-      filename: filename,
-      metadata: {
-        mimetype,
-        //사이즈 정의
-        size: `${(size / 1024).toFixed(2)} KB`,
-      },
+    // 업로드된 모든 파일의 URL 배열 생성
+    const urls = req.files.map(file => `${baseUrl}/uploads/${file.filename}`);
+
+    res.status(200).json({
+      urls: urls
     });
   } catch (error) {
-    // 업로드 중 에러 발생 시 파일 삭제 (롤백) -> 대비
-    if (req.file) {
-      const filePath = path.join("uploads", req.file.filename);
-      await fs
-        .unlink(filePath)
-        .catch((err) => console.error("파일 삭제 실패:", err));
+    // 업로드 중 에러 발생 시 모든 파일 삭제 (롤백)
+    if (req.files) {
+      for (const file of req.files) {
+        const filePath = path.join('uploads', file.filename);
+        await fs.unlink(filePath).catch(err => console.error('파일 삭제 실패:', err));
+      }
     }
     next(error);
   }
@@ -86,7 +80,7 @@ router.delete("/:filename", async (req, res, next) => {
 });
 
 /**
- * GET /images/records/:recordId/images
+ * GET /records/:recordId/images
  * 특정 운동 기록의 이미지 목록 조회
  * - record안의 images 배열을 url 변환하여 반환
  */
@@ -98,38 +92,43 @@ router.get("/records/:recordId/images", async (req, res, next) => {
       throw new BadRequestError("기록 ID가 필요합니다");
     }
 
-    // 숫자 형식 검증 // 없을 경우 cannot convert abc to a bigint 나와서 수정함
+    // 숫자 형식 검증
     if (!/^\d+$/.test(recordId)) {
       throw new BadRequestError('ID가 유효하지 않습니다');
     }
 
-    // bigint 변환 -> 레코id bigint
+    // bigint 변환 (스키마의 Record.id는 BigInt)
     const recordIdBigInt = BigInt(recordId);
 
-    // 기록 조회
+    // 기록 조회 (스키마에 맞게 필드 조회)
     const record = await prisma.record.findUnique({
       where: { id: recordIdBigInt },
       select: {
         id: true,
-        images: true,
-      },
+        images: true,  // String[] 타입
+        type: true,
+        description: true,
+        time: true,
+        distance: true,
+        createdAt: true
+      }
     });
 
     if (!record) {
       throw new NotFoundError("운동 기록");
     }
 
-    // 이미지 url 배열 생성
-    const baseUrl =
-      process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
-    const imageUrls = record.images.map((filename) => ({
-      filename: filename,
-      url: `${baseUrl}/uploads/${filename}`,
-    }));
+    // 이미지 URL 배열 생성 (빈 문자열 필터링)
+    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const imageUrls = record.images
+      .filter(filename => filename && filename.trim() !== '')  // 빈 문자열 제거
+      .map(filename => ({
+        filename: filename,
+        url: `${baseUrl}/uploads/${filename}`
+      }));
 
     res.status(200).json({
-      message: "이미지 목록 조회 성공",
-      recordId: record.id.toString(),
+      recordId: Number(record.id),
       images: imageUrls,
       count: imageUrls.length,
     });
