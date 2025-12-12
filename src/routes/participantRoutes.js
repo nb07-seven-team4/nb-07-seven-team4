@@ -1,7 +1,7 @@
 import express from "express";
-import prisma from ("../prismaClient");
-import { AppError } from ("../utils/errors.js");
-import { BadRequestError } from ("../utils/errors.js");
+import prisma from "../prismaClient.js";
+import { AppError } from "../utils/errors.js";
+import { BadRequestError } from "../utils/errors.js";
 const router = express.Router({ mergeParams: true });
 
 // POST /groups/:groupId/participants - 그룹 참여
@@ -83,10 +83,9 @@ router.delete("/:groupId/participants", async (req, res, next) => {
         id: existingParticipant.id,
       }
     })
-    res.status(204).json(noContent);
+    res.status(204).send();
   } catch (error) {
     next(error);
   }
 });
-
-module.exports = router;
+export default router;
