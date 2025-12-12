@@ -49,30 +49,30 @@ router.post('/', upload.array('files', 10), async (req, res, next) => {
  * 이미지 삭제
  * - 업로드된 이미지 파일을 서버에서 삭제
  */
-router.delete('/:filename', async (req, res, next) => {
+router.delete("/:filename", async (req, res, next) => {
   try {
     const { filename } = req.params;
 
     if (!filename) {
-      throw new BadRequestError('파일명이 필요합니다');
+      throw new BadRequestError("파일명이 필요합니다");
     }
 
     // 파일 경로
-    const filePath = path.join('uploads', filename);
+    const filePath = path.join("uploads", filename);
 
     // 파일 존재 여부 확인
     try {
       await fs.access(filePath);
     } catch (error) {
-      throw new NotFoundError('이미지');
+      throw new NotFoundError("이미지");
     }
 
     // 파일 삭제
     await fs.unlink(filePath);
 
     res.status(200).json({
-      message: '이미지 삭제 성공',
-      filename: filename
+      message: "이미지 삭제 성공",
+      filename: filename,
     });
   } catch (error) {
     next(error);
@@ -84,12 +84,12 @@ router.delete('/:filename', async (req, res, next) => {
  * 특정 운동 기록의 이미지 목록 조회
  * - record안의 images 배열을 url 변환하여 반환
  */
-router.get('/records/:recordId/images', async (req, res, next) => {
+router.get("/records/:recordId/images", async (req, res, next) => {
   try {
     const { recordId } = req.params;
 
     if (!recordId) {
-      throw new BadRequestError('기록 ID가 필요합니다');
+      throw new BadRequestError("기록 ID가 필요합니다");
     }
 
     // 숫자 형식 검증
@@ -115,7 +115,7 @@ router.get('/records/:recordId/images', async (req, res, next) => {
     });
 
     if (!record) {
-      throw new NotFoundError('운동 기록');
+      throw new NotFoundError("운동 기록");
     }
 
     // 이미지 URL 배열 생성 (빈 문자열 필터링)
@@ -130,7 +130,7 @@ router.get('/records/:recordId/images', async (req, res, next) => {
     res.status(200).json({
       recordId: Number(record.id),
       images: imageUrls,
-      count: imageUrls.length
+      count: imageUrls.length,
     });
   } catch (error) {
     next(error);

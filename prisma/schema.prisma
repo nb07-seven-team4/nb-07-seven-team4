@@ -6,9 +6,6 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-
-
-
 model Group {
   id                BigInt         @id @default(autoincrement())
   name              String         @unique

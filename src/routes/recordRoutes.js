@@ -1,56 +1,88 @@
 import express from "express";
 import prisma from "../prismaClient.js";
 import { Record } from "./record.js";
+import { deserialize } from "v8";
 
 const router = express.Router({ mergeParams: true });
 
 // POST /groups/:groupId/records - 운동 기록 생성
 router.post("/", async (req, res, next) => {
   const groupId = BigInt(req.params.groupId);
-  const { exerciseType, description, duration, distance, images } = req.body;
+  const {
+    exerciseType,
+    description,
+    time,
+    distance,
+    photos,
+    authorNickname,
+    authorPassword,
+  } = req.body;
 
-  // 참여자 인증 (테스트를 위해 임시로 지정)
-  const participantId = BigInt(1);
   try {
-    // 유효성 검사
-    const recordInfoEntity = {
-      id: "0",
-      exerciseType: exerciseType,
-      description: description || "",
-      duration: duration,
-      distance: distance,
-      images: images || [],
-      createdAt: new Date(),
-      groupId: groupId.toString(),
-      participantId: participantId.toString(),
-    };
+    // 닉네임과 비밀번호를 사용하여 해당 그룹의 참가자를 찾기
+    const participant = await prisma.participant.findUnique({
+      where: {
+        groupId_nickname: {
+          groupId: groupId,
+          nickname: authorNickname,
+        },
+      },
+    });
 
-    const newRecord = Record.fromEntity(recordInfoEntity);
+    if (!participant) {
+      return res.status(401).json({ message: "유효하지 않은 닉네임입니다." });
+    }
+
+    if (participant.password !== authorPassword) {
+      return res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
+    }
+
+    // 인증 성공: 참가자 ID 확보
+    const participantId = participant.id;
+
+    // 유효성 검사 로직 따로 추가 예정
 
     const postRecord = await prisma.record.create({
       data: {
-        exerciseType: newRecord.exerciseType,
-        description: newRecord.description,
-        duration: newRecord.duration,
-        distance: newRecord.distance,
-        images: newRecord.images,
+        type: exerciseType,
+        description: description || "",
+        time: time,
+        distance: distance,
+        images: photos || [],
 
         // 관계 설정
-        group: {
-          connect: {
-            id: BigInt(newRecord.groupId),
-          },
-        },
-        // 관계 설정
+        group: { connect: { id: groupId } },
+        participant: { connect: { id: participantId } },
+      },
+      include: {
         participant: {
-          connect: {
-            id: BigInt(newRecord.participantId),
+          select: {
+            id: true,
+            nickname: true,
           },
         },
       },
     });
 
-    res.status(201).json(postRecord);
+    // 응답 형식에 맞게 매핑
+    const recordData = {
+      id: Number(postRecord.id),
+      exerciseType: postRecord.type,
+      description: postRecord.description,
+      time: postRecord.time,
+      distance: postRecord.distance,
+      photos: postRecord.images,
+      author: {
+        id: Number(postRecord.participant.id),
+        nickname: postRecord.participant.nickname,
+      },
+    };
+
+    res.status(201).json({
+      success: true,
+      data: recordData,
+      message: "운동 기록이 성공적으로 등록되었습니다.",
+    });
   } catch (error) {
     next(error);
   }
@@ -78,13 +110,16 @@ router.get("/", async (req, res, next) => {
 
     if (search) {
       whereConditions.OR = [
-        { exerciseType: { contains: search, mode: "insensitive" } },
+        { type: { contains: search, mode: "insensitive" } },
         { description: { contains: search, mode: "insensitive" } },
       ];
     }
 
     if (exerciseType) {
-      whereConditions.exerciseType = { contains: exerciseType, mode: "insensitive" };
+      whereConditions.type = {
+        contains: exerciseType,
+        mode: "insensitive",
+      };
     }
 
     if (participantNickname) {
@@ -155,10 +190,29 @@ router.get("/:recordId", async (req, res, next) => {
 
     // 미들웨어로 뺄 계획.
     if (!record) {
-      return res.status(404).json({ message: "기록이 없습니다.." });
+      return res
+        .status(404)
+        .json({ success: false, message: "기록이 없습니다.." });
     }
 
-    res.status(200).json(record);
+    // 응답 데이터 매핑 추가
+    const recordData = {
+      id: Number(record.id),
+      exerciseType: record.type,
+      description: record.description,
+      time: record.time,
+      distance: record.distance,
+      photos: record.images,
+      author: {
+        id: Number(record.participant.id),
+        nickname: record.participant.nickname,
+      },
+    };
+
+    res.status(200).json({
+      success: true,
+      data: recordData,
+    });
   } catch (error) {
     next(error);
   }
