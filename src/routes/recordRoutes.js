@@ -72,6 +72,7 @@ router.post("/", async (req, res, next) => {
       time: postRecord.time,
       distance: postRecord.distance,
       photos: postRecord.images,
+      createAt: postRecord.createAt,
       author: {
         id: Number(postRecord.participant.id),
         nickname: postRecord.participant.nickname,
