@@ -39,6 +39,12 @@ export class ForbiddenError extends AppError {
   }
 }
 
+export class ConflictError extends AppError {
+  constructor(message = "Conflict") {
+    super(message, 409);
+  }
+}
+
 /**
  * Async 핸들러 래퍼 (try-catch 자동화)
  */

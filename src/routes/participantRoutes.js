@@ -1,11 +1,11 @@
 import express from "express";
 import prisma from "../prismaClient.js";
-import { AppError } from "../utils/errors.js";
-import { BadRequestError } from "../utils/errors.js";
+import { BadRequestError, NotFoundError, ConflictError } from "../utils/errors.js";
+
 const router = express.Router({ mergeParams: true });
 
 // POST /groups/:groupId/participants - 그룹 참여
-router.post("/:groupId/join", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const { nickname, password } = req.body;
@@ -44,9 +44,7 @@ router.post("/:groupId/join", async (req, res, next) => {
     const responseGroupData = await prisma.group.findUnique({
       where: {id: idToNum},
       include: {
-        owner: true,
         participants: true,
-        tags: true,
         badges: true,
       },
     })
@@ -57,7 +55,7 @@ router.post("/:groupId/join", async (req, res, next) => {
 });
 
 // DELETE /groups/:groupId/participants - 그룹 참여 취소
-router.delete("/:groupId/participants", async (req, res, next) => {
+router.delete("/", async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const { nickname, password } = req.body;

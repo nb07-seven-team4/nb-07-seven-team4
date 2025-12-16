@@ -514,7 +514,7 @@ router.delete("/:groupId", async (req, res, next) => {
 });
 
 // POST /groups/:groupId/likes - 그룹 추천
-router.patch("/:groupId/likes", async (req, res, next) => {
+router.post("/:groupId/likes", async (req, res, next) => {
   try {
     const { groupId } = req.params;
     if (!groupId) {
