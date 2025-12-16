@@ -1,6 +1,8 @@
 import express from "express";
 import prisma from "../prismaClient.js";
+
 import { BadRequestError, NotFoundError, ConflictError } from "../utils/errors.js";
+
 
 const router = express.Router({ mergeParams: true });
 
@@ -26,12 +28,12 @@ router.post("/", async (req, res, next) => {
       throw new ConflictError("이미 사용중인 닉네임");
     }
     const group = await prisma.group.findUnique({
-    where: { id: idToNum },
-});
+      where: { id: idToNum },
+    });
 
     if (!group) {
-    throw new NotFoundError("존재하지 않는 그룹 ID입니다.");
-}
+      throw new NotFoundError("존재하지 않는 그룹 ID입니다.");
+    }
 
     const newParticipant = await prisma.participant.create({
       data: {
@@ -42,12 +44,12 @@ router.post("/", async (req, res, next) => {
     });
 
     const responseGroupData = await prisma.group.findUnique({
-      where: {id: idToNum},
+      where: { id: idToNum },
       include: {
         participants: true,
         badges: true,
       },
-    })
+    });
     res.status(201).json(responseGroupData);
   } catch (error) {
     next(error);
@@ -79,8 +81,8 @@ router.delete("/", async (req, res, next) => {
     const deleteParticipant = await prisma.participant.delete({
       where: {
         id: existingParticipant.id,
-      }
-    })
+      },
+    });
     res.status(204).send();
   } catch (error) {
     next(error);

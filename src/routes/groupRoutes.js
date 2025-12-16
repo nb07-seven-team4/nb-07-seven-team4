@@ -15,23 +15,23 @@ const router = express.Router({ mergeParams: true });
 // POST /groups - 그룹 생성
 router.post("/", async (req, res, next) => {
   // 디버깅: 프론트엔드에서 받은 데이터 확인
-  console.log('[백엔드] 받은 req.body:', JSON.stringify(req.body, null, 2));
+  console.log("[백엔드] 받은 req.body:", JSON.stringify(req.body, null, 2));
 
   // 수정: API 명세에 맞춘 필드명 (photoUrl, goalRep, ownerNickname, ownerPassword)
   const {
     name,
     description,
-    photoUrl,        // 수정: image → photoUrl (API 명세 필드명)
+    photoUrl, // 수정: image → photoUrl (API 명세 필드명)
     tags,
-    goalRep,         // 수정: targetCount → goalRep (API 명세 필드명)
+    goalRep, // 수정: targetCount → goalRep (API 명세 필드명)
     discordWebhookUrl,
     discordInviteUrl,
-    ownerNickname,   // 수정: nickname → ownerNickname (API 명세 필드명)
-    ownerPassword    // 수정: password → ownerPassword (API 명세 필드명)
+    ownerNickname, // 수정: nickname → ownerNickname (API 명세 필드명)
+    ownerPassword, // 수정: password → ownerPassword (API 명세 필드명)
   } = req.body;
 
   // 디버깅: 각 필드 값 확인
-  console.log('[백엔드] 필드 체크:', {
+  console.log("[백엔드] 필드 체크:", {
     name: `"${name}" (${typeof name})`,
     ownerNickname: `"${ownerNickname}" (${typeof ownerNickname})`,
     ownerPassword: `"${ownerPassword}" (${typeof ownerPassword})`,
@@ -40,7 +40,7 @@ router.post("/", async (req, res, next) => {
     tags: tags,
     goalRep: `"${goalRep}" (${typeof goalRep})`,
     discordWebhookUrl: `"${discordWebhookUrl}" (${typeof discordWebhookUrl})`,
-    discordInviteUrl: `"${discordInviteUrl}" (${typeof discordInviteUrl})`
+    discordInviteUrl: `"${discordInviteUrl}" (${typeof discordInviteUrl})`,
   });
 
   // 수정: 필수 필드 검증 (API 명세 기준)
@@ -48,17 +48,18 @@ router.post("/", async (req, res, next) => {
   if (!name || !ownerNickname || !ownerPassword) {
     return res.status(400).json({
       path: "body",
-      message: '필수 필드를 모두 입력해주세요 (name, ownerNickname, ownerPassword)'
+      message:
+        "필수 필드를 모두 입력해주세요 (name, ownerNickname, ownerPassword)",
     });
   }
 
   // 선택 필드에 기본값 설정
-  const finalPhotoUrl = photoUrl || 'https://via.placeholder.com/150'; // 기본 값 이미지
-  const finalDescription = description || '';
+  const finalPhotoUrl = photoUrl || "https://via.placeholder.com/150"; // 기본 값 이미지
+  const finalDescription = description || "";
   const finalTags = tags || [];
   const finalGoalRep = goalRep || 0;
-  const finalDiscordWebhookUrl = discordWebhookUrl || '';
-  const finalDiscordInviteUrl = discordInviteUrl || '';
+  const finalDiscordWebhookUrl = discordWebhookUrl || "";
+  const finalDiscordInviteUrl = discordInviteUrl || "";
 
   try {
     // 수정: Group과 Owner(Participant)를 트랜잭션으로 동시에 생성
@@ -73,8 +74,8 @@ router.post("/", async (req, res, next) => {
           goalRep: finalGoalRep,
           discordWebhookUrl: finalDiscordWebhookUrl,
           discordInviteUrl: finalDiscordInviteUrl,
-          ownerId: BigInt(0) // 임시값
-        }
+          ownerId: BigInt(0), // 임시값
+        },
       });
 
       // 2. Owner를 Participant로 생성
@@ -83,14 +84,14 @@ router.post("/", async (req, res, next) => {
           nickname: ownerNickname,
           password: ownerPassword,
           isOwner: true,
-          groupId: tempGroup.id
-        }
+          groupId: tempGroup.id,
+        },
       });
 
       // 3. Group의 ownerId 업데이트
       await tx.group.update({
         where: { id: tempGroup.id },
-        data: { ownerId: owner.id }
+        data: { ownerId: owner.id },
       });
 
       // 4. 생성된 그룹에 owner와 participants 포함해서 조회
@@ -98,13 +99,13 @@ router.post("/", async (req, res, next) => {
         where: { id: tempGroup.id },
         include: {
           participants: true,
-          badges: true
-        }
+          badges: true,
+        },
       });
     });
 
     // 수정: API 명세에 맞춘 응답 구조 (owner 분리, photoUrl/goalRep 필드명)
-    const owner = result.participants.find(p => p.isOwner);
+    const owner = result.participants.find((p) => p.isOwner);
     const response = {
       id: Number(result.id),
       name: result.name,
@@ -119,17 +120,17 @@ router.post("/", async (req, res, next) => {
         id: Number(owner.id),
         nickname: owner.nickname,
         createdAt: owner.joinedAt.getTime(),
-        updatedAt: owner.joinedAt.getTime()
+        updatedAt: owner.joinedAt.getTime(),
       },
-      participants: result.participants.map(p => ({
+      participants: result.participants.map((p) => ({
         id: Number(p.id),
         nickname: p.nickname,
         createdAt: p.joinedAt.getTime(),
-        updatedAt: p.joinedAt.getTime()
+        updatedAt: p.joinedAt.getTime(),
       })),
       createdAt: result.createdAt.getTime(),
       updatedAt: result.updatedAt.getTime(),
-      badges: result.badges.map(b => b.type)
+      badges: result.badges.map((b) => b.type),
     };
 
     return res.status(201).json(response);
@@ -149,11 +150,11 @@ router.get("/", async (req, res, next) => {
     const order = req.query.order || "desc"; // asc, desc
 
     // 수정: orderBy 유효성 검증 (API 명세 기준)
-    const validOrderBy = ['likeCount', 'participantCount', 'createdAt'];
+    const validOrderBy = ["likeCount", "participantCount", "createdAt"];
     if (!validOrderBy.includes(orderBy)) {
       return res.status(400).json({
         path: "orderBy",
-        message: `The orderBy parameter must be one of the following values: ${JSON.stringify(validOrderBy)}.`
+        message: `The orderBy parameter must be one of the following values: ${JSON.stringify(validOrderBy)}.`,
       });
     }
 
@@ -173,9 +174,9 @@ router.get("/", async (req, res, next) => {
 
     // 수정: orderBy에 따른 정렬 필드 매핑
     let prismaOrderBy = {};
-    if (orderBy === 'likeCount') {
+    if (orderBy === "likeCount") {
       prismaOrderBy = { likeCount: order };
-    } else if (orderBy === 'participantCount') {
+    } else if (orderBy === "participantCount") {
       // participantCount는 count 집계이므로 별도 처리 필요
       prismaOrderBy = { participants: { _count: order } };
     } else {
@@ -189,23 +190,23 @@ router.get("/", async (req, res, next) => {
       take: limit,
       orderBy: prismaOrderBy,
       include: {
-        participants: true,  // owner 분리를 위해 전체 participants 조회
+        participants: true, // owner 분리를 위해 전체 participants 조회
         badges: true,
         _count: {
           select: {
-            records: true  // recordCount
-          }
-        }
-      }
+            records: true, // recordCount
+          },
+        },
+      },
     });
 
     // 수정: API 명세에 맞춘 응답 데이터 포맷팅
-    const formattedGroups = groups.map(group => {
+    const formattedGroups = groups.map((group) => {
       // isOwner가 true인 참여자를 찾거나, 없으면 ownerId와 일치하는 참여자 찾기
-      let owner = group.participants.find(p => p.isOwner);
+      let owner = group.participants.find((p) => p.isOwner);
       if (!owner) {
         // isOwner가 없는 경우 ownerId로 찾기 (기존 데이터 호환)
-        owner = group.participants.find(p => p.id === group.ownerId);
+        owner = group.participants.find((p) => p.id === group.ownerId);
       }
 
       return {
@@ -219,34 +220,36 @@ router.get("/", async (req, res, next) => {
         likeCount: group.likeCount,
         recordCount: group._count.records,
         tags: group.tags,
-        owner: owner ? {
-          id: Number(owner.id),
-          nickname: owner.nickname,
-          createdAt: owner.joinedAt.getTime(),
-          updatedAt: owner.joinedAt.getTime()
-        } : {
-          // owner를 찾지 못한 경우 기본값 제공 (에러 방지)
-          id: 0,
-          nickname: 'Unknown',
-          createdAt: group.createdAt.getTime(),
-          updatedAt: group.updatedAt.getTime()
-        },
-        participants: group.participants.map(p => ({
+        owner: owner
+          ? {
+              id: Number(owner.id),
+              nickname: owner.nickname,
+              createdAt: owner.joinedAt.getTime(),
+              updatedAt: owner.joinedAt.getTime(),
+            }
+          : {
+              // owner를 찾지 못한 경우 기본값 제공 (에러 방지)
+              id: 0,
+              nickname: "Unknown",
+              createdAt: group.createdAt.getTime(),
+              updatedAt: group.updatedAt.getTime(),
+            },
+        participants: group.participants.map((p) => ({
           id: Number(p.id),
           nickname: p.nickname,
           createdAt: p.joinedAt.getTime(),
-          updatedAt: p.joinedAt.getTime()
+          updatedAt: p.joinedAt.getTime(),
         })),
         createdAt: group.createdAt.getTime(),
         updatedAt: group.updatedAt.getTime(),
-        badges: group.badges.map(b => b.type)
+        badges: group.badges.map((b) => b.type),
       };
     });
 
     // 수정: API 명세에 맞춘 응답 구조 (data, total)
     return res.status(200).json({
       data: formattedGroups,
-      total: totalCount
+      total: totalCount,
     });
   } catch (error) {
     next(error);
@@ -265,21 +268,21 @@ router.get("/:groupId", async (req, res, next) => {
       include: {
         participants: true,
         badges: true,
-      }
+      },
     });
 
     // 수정: 그룹이 없으면 404 에러 (API 명세 기준)
     if (!group) {
       return res.status(404).json({
-        message: "Group not found"
+        message: "Group not found",
       });
     }
 
     // 수정: API 명세에 맞춘 응답 구조 (owner 분리, photoUrl/goalRep 필드명)
-    let owner = group.participants.find(p => p.isOwner);
+    let owner = group.participants.find((p) => p.isOwner);
     if (!owner) {
       // isOwner가 없는 경우 ownerId로 찾기 (기존 데이터 호환)
-      owner = group.participants.find(p => p.id === group.ownerId);
+      owner = group.participants.find((p) => p.id === group.ownerId);
     }
 
     const response = {
@@ -292,27 +295,29 @@ router.get("/:groupId", async (req, res, next) => {
       discordInviteUrl: group.discordInviteUrl,
       likeCount: group.likeCount,
       tags: group.tags,
-      owner: owner ? {
-        id: Number(owner.id),
-        nickname: owner.nickname,
-        createdAt: owner.joinedAt.getTime(),
-        updatedAt: owner.joinedAt.getTime()
-      } : {
-        // owner를 찾지 못한 경우 기본값 제공
-        id: 0,
-        nickname: 'Unknown',
-        createdAt: group.createdAt.getTime(),
-        updatedAt: group.updatedAt.getTime()
-      },
-      participants: group.participants.map(p => ({
+      owner: owner
+        ? {
+            id: Number(owner.id),
+            nickname: owner.nickname,
+            createdAt: owner.joinedAt.getTime(),
+            updatedAt: owner.joinedAt.getTime(),
+          }
+        : {
+            // owner를 찾지 못한 경우 기본값 제공
+            id: 0,
+            nickname: "Unknown",
+            createdAt: group.createdAt.getTime(),
+            updatedAt: group.updatedAt.getTime(),
+          },
+      participants: group.participants.map((p) => ({
         id: Number(p.id),
         nickname: p.nickname,
         createdAt: p.joinedAt.getTime(),
-        updatedAt: p.joinedAt.getTime()
+        updatedAt: p.joinedAt.getTime(),
       })),
       createdAt: group.createdAt.getTime(),
       updatedAt: group.updatedAt.getTime(),
-      badges: group.badges.map(b => b.type)
+      badges: group.badges.map((b) => b.type),
     };
 
     res.status(200).json(response);
@@ -331,13 +336,13 @@ router.patch("/:groupId", async (req, res, next) => {
     const {
       name,
       description,
-      photoUrl,           // 수정: image → photoUrl
+      photoUrl, // 수정: image → photoUrl
       tags,
-      goalRep,            // 수정: targetCount → goalRep
+      goalRep, // 수정: targetCount → goalRep
       discordWebhookUrl,
       discordInviteUrl,
-      ownerNickname,      // 수정: 인증용 ownerNickname 추가
-      ownerPassword       // 수정: 인증용 ownerPassword 추가
+      ownerNickname, // 수정: 인증용 ownerNickname 추가
+      ownerPassword, // 수정: 인증용 ownerPassword 추가
     } = req.body;
 
     // 수정: 그룹 조회 (owner 인증을 위해)
@@ -345,22 +350,26 @@ router.patch("/:groupId", async (req, res, next) => {
       where: { id },
       include: {
         participants: true,
-        badges: true
-      }
+        badges: true,
+      },
     });
 
     if (!group) {
       return res.status(404).json({
-        message: "Group not found"
+        message: "Group not found",
       });
     }
 
     // 수정: owner 인증 (ownerNickname + ownerPassword 검증)
-    const owner = group.participants.find(p => p.isOwner);
-    if (!owner || owner.nickname !== ownerNickname || owner.password !== ownerPassword) {
+    const owner = group.participants.find((p) => p.isOwner);
+    if (
+      !owner ||
+      owner.nickname !== ownerNickname ||
+      owner.password !== ownerPassword
+    ) {
       return res.status(401).json({
         path: "password",
-        message: "Wrong password"
+        message: "Wrong password",
       });
     }
 
@@ -371,13 +380,15 @@ router.patch("/:groupId", async (req, res, next) => {
     if (photoUrl !== undefined) updateData.photoUrl = photoUrl;
     if (tags !== undefined) updateData.tags = tags;
     if (goalRep !== undefined) updateData.goalRep = goalRep;
-    if (discordWebhookUrl !== undefined) updateData.discordWebhookUrl = discordWebhookUrl;
-    if (discordInviteUrl !== undefined) updateData.discordInviteUrl = discordInviteUrl;
+    if (discordWebhookUrl !== undefined)
+      updateData.discordWebhookUrl = discordWebhookUrl;
+    if (discordInviteUrl !== undefined)
+      updateData.discordInviteUrl = discordInviteUrl;
 
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({
         path: "body",
-        message: "수정할 데이터가 요청에 포함되어 있지 않습니다."
+        message: "수정할 데이터가 요청에 포함되어 있지 않습니다.",
       });
     }
 
@@ -387,8 +398,8 @@ router.patch("/:groupId", async (req, res, next) => {
       data: updateData,
       include: {
         participants: true,
-        badges: true
-      }
+        badges: true,
+      },
     });
 
     // 수정: API 명세에 맞춘 응답 구조
@@ -406,17 +417,17 @@ router.patch("/:groupId", async (req, res, next) => {
         id: Number(owner.id),
         nickname: owner.nickname,
         createdAt: owner.joinedAt.getTime(),
-        updatedAt: owner.joinedAt.getTime()
+        updatedAt: owner.joinedAt.getTime(),
       },
-      participants: updatedGroup.participants.map(p => ({
+      participants: updatedGroup.participants.map((p) => ({
         id: Number(p.id),
         nickname: p.nickname,
         createdAt: p.joinedAt.getTime(),
-        updatedAt: p.joinedAt.getTime()
+        updatedAt: p.joinedAt.getTime(),
       })),
       createdAt: updatedGroup.createdAt.getTime(),
       updatedAt: updatedGroup.updatedAt.getTime(),
-      badges: updatedGroup.badges.map(b => b.type)
+      badges: updatedGroup.badges.map((b) => b.type),
     };
 
     res.status(200).json(response);
@@ -440,23 +451,23 @@ router.delete("/:groupId", async (req, res, next) => {
       include: {
         participants: true,
         records: {
-          select: { images: true } // 운동 기록의 이미지 URL만 가져오기
-        }
-      }
+          select: { images: true }, // 운동 기록의 이미지 URL만 가져오기
+        },
+      },
     });
 
     if (!group) {
       return res.status(404).json({
-        message: "Group not found"
+        message: "Group not found",
       });
     }
 
     // 수정: owner 인증 (ownerPassword만 검증)
-    const owner = group.participants.find(p => p.isOwner);
+    const owner = group.participants.find((p) => p.isOwner);
     if (!owner || owner.password !== ownerPassword) {
       return res.status(401).json({
         path: "password",
-        message: "Wrong password"
+        message: "Wrong password",
       });
     }
 
@@ -468,18 +479,26 @@ router.delete("/:groupId", async (req, res, next) => {
     // 1. 그룹 썸네일 이미지 추출
     if (group.photoUrl) {
       // URL에서 파일명만 추출 (예: "http://localhost:3000/uploads/uuid.jpg" -> "uuid.jpg")
-      const filename = group.photoUrl.split('/').pop();
+      const filename = group.photoUrl.split("/").pop();
       // placeholder URL이 아니고 실제 파일명인 경우만 삭제 목록에 추가
-      if (filename && !filename.startsWith('http') && !filename.includes('placeholder')) {
+      if (
+        filename &&
+        !filename.startsWith("http") &&
+        !filename.includes("placeholder")
+      ) {
         imagesToDelete.push(filename);
       }
     }
 
     // 2. 운동 기록의 모든 이미지들 추출
-    group.records.forEach(record => {
-      record.images.forEach(imageUrl => {
-        const filename = imageUrl.split('/').pop();
-        if (filename && !filename.startsWith('http') && !filename.includes('placeholder')) {
+    group.records.forEach((record) => {
+      record.images.forEach((imageUrl) => {
+        const filename = imageUrl.split("/").pop();
+        if (
+          filename &&
+          !filename.startsWith("http") &&
+          !filename.includes("placeholder")
+        ) {
           imagesToDelete.push(filename);
         }
       });
@@ -489,7 +508,7 @@ router.delete("/:groupId", async (req, res, next) => {
     // DB에서 그룹 삭제 (Cascade로 participants, records, badges도 자동 삭제)
     // ============================================
     await prisma.group.delete({
-      where: { id }
+      where: { id },
     });
 
     // ============================================
@@ -497,7 +516,7 @@ router.delete("/:groupId", async (req, res, next) => {
     // ============================================
     for (const filename of imagesToDelete) {
       try {
-        const filePath = path.join('uploads', filename);
+        const filePath = path.join("uploads", filename);
         await fs.unlink(filePath);
         console.log(`✅ 이미지 삭제 성공: ${filename}`);
       } catch (err) {
@@ -507,7 +526,7 @@ router.delete("/:groupId", async (req, res, next) => {
       }
     }
 
-    res.status(204).end();  // 삭제 성공 (본문 없음)
+    res.status(204).end(); // 삭제 성공 (본문 없음)
   } catch (error) {
     next(error);
   }
