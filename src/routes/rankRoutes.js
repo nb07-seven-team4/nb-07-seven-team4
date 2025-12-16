@@ -23,54 +23,49 @@ router.get("/", async (req, res, next) => {
       throw new NotFoundError("그룹");
     }
 
-    // 3. 달리기 기록만 조회 (exerciseType = "달리기") -> enum으로 스키마추가해서 다른 운동도 추가?
-    // rank 검증에서 필터로 운동별 랭킹 가능 -> 스키마 추가 or 추가안하고 그대로?
+    // 3. 모든 운동 기록 조회 (달리기, 자전거, 수영)
     const records = await prisma.record.findMany({
       where: {
         groupId: groupIdNum,
-        exerciseType: "달리기", // 달리기 기록만 필터링
+        // 모든 운동 종류 포함 (type 필터 제거)
       },
       include: {
         participant: true, // 참가자 정보 포함
       },
     });
 
-    // 4. 참가자별 점수 집계
+    // 4. 참가자별 데이터 집계
     // Map으로 참가자별 기록 그룹화
-    const participantScores = new Map();
+    const participantData = new Map();
 
     records.forEach((record) => {
       const participantId = record.participantId.toString();
 
-      if (!participantScores.has(participantId)) {
-        participantScores.set(participantId, {
+      if (!participantData.has(participantId)) {
+        participantData.set(participantId, {
           participant: record.participant,
-          totalDuration: 0,
-          totalDistance: 0,
+          recordCount: 0,      // 기록 횟수
+          totalTime: 0,        // 누적 시간 (초)
         });
       }
 
-      const scoreData = participantScores.get(participantId);
-      scoreData.totalDuration += record.duration;
-      scoreData.totalDistance += record.distance || 0; // null이면 0으로 처리
+      const data = participantData.get(participantId);
+      data.recordCount += 1;                    // 기록 횟수 증가
+      data.totalTime += record.time || 0;       // 시간 누적 (time 필드 사용)
     });
 
-    // 5. 점수 계산 및 배열 변환
-    // 점수 공식: duration + (distance × 15)
-    const scoresArray = Array.from(participantScores.values()).map((data) => ({
-      participant: data.participant,
-      totalScore: data.totalDuration + data.totalDistance * 15,
-    }));
+    // 5. 배열로 변환
+    const dataArray = Array.from(participantData.values());
 
-    // 6. 총점 기준 내림차순 정렬
-    scoresArray.sort((a, b) => b.totalScore - a.totalScore);
+    // 6. 누적 시간 기준 내림차순 정렬
+    dataArray.sort((a, b) => b.totalTime - a.totalTime);
 
-    // 7. 순위 부여 및 Rank 객체로 변환
-    const rankings = scoresArray.map((scoreData, index) =>
+    // 7. Rank 객체로 변환
+    const rankings = dataArray.map((data) =>
       Rank.fromParticipantEntity(
-        scoreData.participant,
-        scoreData.totalScore,
-        index + 1 // 순위 (1, 2, 3, ...)
+        data.participant,
+        data.recordCount,    // 기록 횟수
+        data.totalTime       // 누적 시간 (초)
       )
     );
 
