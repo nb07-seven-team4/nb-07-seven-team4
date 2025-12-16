@@ -28,104 +28,104 @@ export type AggregateRecord = {
 
 export type RecordAvgAggregateOutputType = {
   id: number | null
-  time: number | null
   distance: number | null
   groupId: number | null
   participantId: number | null
+  time: number | null
 }
 
 export type RecordSumAggregateOutputType = {
   id: bigint | null
-  time: number | null
   distance: number | null
   groupId: bigint | null
   participantId: bigint | null
+  time: number | null
 }
 
 export type RecordMinAggregateOutputType = {
   id: bigint | null
-  type: string | null
   description: string | null
-  time: number | null
   distance: number | null
   createdAt: Date | null
   groupId: bigint | null
   participantId: bigint | null
+  time: number | null
+  type: string | null
 }
 
 export type RecordMaxAggregateOutputType = {
   id: bigint | null
-  type: string | null
   description: string | null
-  time: number | null
   distance: number | null
   createdAt: Date | null
   groupId: bigint | null
   participantId: bigint | null
+  time: number | null
+  type: string | null
 }
 
 export type RecordCountAggregateOutputType = {
   id: number
-  type: number
   description: number
-  time: number
   distance: number
   images: number
   createdAt: number
   groupId: number
   participantId: number
+  time: number
+  type: number
   _all: number
 }
 
 
 export type RecordAvgAggregateInputType = {
   id?: true
-  time?: true
   distance?: true
   groupId?: true
   participantId?: true
+  time?: true
 }
 
 export type RecordSumAggregateInputType = {
   id?: true
-  time?: true
   distance?: true
   groupId?: true
   participantId?: true
+  time?: true
 }
 
 export type RecordMinAggregateInputType = {
   id?: true
-  type?: true
   description?: true
-  time?: true
   distance?: true
   createdAt?: true
   groupId?: true
   participantId?: true
+  time?: true
+  type?: true
 }
 
 export type RecordMaxAggregateInputType = {
   id?: true
-  type?: true
   description?: true
-  time?: true
   distance?: true
   createdAt?: true
   groupId?: true
   participantId?: true
+  time?: true
+  type?: true
 }
 
 export type RecordCountAggregateInputType = {
   id?: true
-  type?: true
   description?: true
-  time?: true
   distance?: true
   images?: true
   createdAt?: true
   groupId?: true
   participantId?: true
+  time?: true
+  type?: true
   _all?: true
 }
 
@@ -217,14 +217,14 @@ export type RecordGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type RecordGroupByOutputType = {
   id: bigint
-  type: string
   description: string | null
-  time: number
   distance: number | null
   images: string[]
   createdAt: Date
   groupId: bigint
   participantId: bigint
+  time: number
+  type: string
   _count: RecordCountAggregateOutputType | null
   _avg: RecordAvgAggregateOutputType | null
   _sum: RecordSumAggregateOutputType | null
@@ -252,28 +252,28 @@ export type RecordWhereInput = {
   OR?: Prisma.RecordWhereInput[]
   NOT?: Prisma.RecordWhereInput | Prisma.RecordWhereInput[]
   id?: Prisma.BigIntFilter<"Record"> | bigint | number
-  type?: Prisma.StringFilter<"Record"> | string
   description?: Prisma.StringNullableFilter<"Record"> | string | null
-  time?: Prisma.IntFilter<"Record"> | number
   distance?: Prisma.FloatNullableFilter<"Record"> | number | null
   images?: Prisma.StringNullableListFilter<"Record">
   createdAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   groupId?: Prisma.BigIntFilter<"Record"> | bigint | number
   participantId?: Prisma.BigIntFilter<"Record"> | bigint | number
+  time?: Prisma.IntFilter<"Record"> | number
+  type?: Prisma.StringFilter<"Record"> | string
   group?: Prisma.XOR<Prisma.GroupScalarRelationFilter, Prisma.GroupWhereInput>
   participant?: Prisma.XOR<Prisma.ParticipantScalarRelationFilter, Prisma.ParticipantWhereInput>
 }
 
 export type RecordOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  time?: Prisma.SortOrder
   distance?: Prisma.SortOrderInput | Prisma.SortOrder
   images?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   participantId?: Prisma.SortOrder
+  time?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   group?: Prisma.GroupOrderByWithRelationInput
   participant?: Prisma.ParticipantOrderByWithRelationInput
 }
@@ -283,28 +283,28 @@ export type RecordWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.RecordWhereInput | Prisma.RecordWhereInput[]
   OR?: Prisma.RecordWhereInput[]
   NOT?: Prisma.RecordWhereInput | Prisma.RecordWhereInput[]
-  type?: Prisma.StringFilter<"Record"> | string
   description?: Prisma.StringNullableFilter<"Record"> | string | null
-  time?: Prisma.IntFilter<"Record"> | number
   distance?: Prisma.FloatNullableFilter<"Record"> | number | null
   images?: Prisma.StringNullableListFilter<"Record">
   createdAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   groupId?: Prisma.BigIntFilter<"Record"> | bigint | number
   participantId?: Prisma.BigIntFilter<"Record"> | bigint | number
+  time?: Prisma.IntFilter<"Record"> | number
+  type?: Prisma.StringFilter<"Record"> | string
   group?: Prisma.XOR<Prisma.GroupScalarRelationFilter, Prisma.GroupWhereInput>
   participant?: Prisma.XOR<Prisma.ParticipantScalarRelationFilter, Prisma.ParticipantWhereInput>
 }, "id">
 
 export type RecordOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  time?: Prisma.SortOrder
   distance?: Prisma.SortOrderInput | Prisma.SortOrder
   images?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   participantId?: Prisma.SortOrder
+  time?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   _count?: Prisma.RecordCountOrderByAggregateInput
   _avg?: Prisma.RecordAvgOrderByAggregateInput
   _max?: Prisma.RecordMaxOrderByAggregateInput
@@ -317,96 +317,96 @@ export type RecordScalarWhereWithAggregatesInput = {
   OR?: Prisma.RecordScalarWhereWithAggregatesInput[]
   NOT?: Prisma.RecordScalarWhereWithAggregatesInput | Prisma.RecordScalarWhereWithAggregatesInput[]
   id?: Prisma.BigIntWithAggregatesFilter<"Record"> | bigint | number
-  type?: Prisma.StringWithAggregatesFilter<"Record"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Record"> | string | null
-  time?: Prisma.IntWithAggregatesFilter<"Record"> | number
   distance?: Prisma.FloatNullableWithAggregatesFilter<"Record"> | number | null
   images?: Prisma.StringNullableListFilter<"Record">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Record"> | Date | string
   groupId?: Prisma.BigIntWithAggregatesFilter<"Record"> | bigint | number
   participantId?: Prisma.BigIntWithAggregatesFilter<"Record"> | bigint | number
+  time?: Prisma.IntWithAggregatesFilter<"Record"> | number
+  type?: Prisma.StringWithAggregatesFilter<"Record"> | string
 }
 
 export type RecordCreateInput = {
   id?: bigint | number
-  type: string
   description?: string | null
-  time: number
   distance?: number | null
   images?: Prisma.RecordCreateimagesInput | string[]
   createdAt?: Date | string
+  time: number
+  type: string
   group: Prisma.GroupCreateNestedOneWithoutRecordsInput
   participant: Prisma.ParticipantCreateNestedOneWithoutRecordsInput
 }
 
 export type RecordUncheckedCreateInput = {
   id?: bigint | number
-  type: string
   description?: string | null
-  time: number
   distance?: number | null
   images?: Prisma.RecordCreateimagesInput | string[]
   createdAt?: Date | string
   groupId: bigint | number
   participantId: bigint | number
+  time: number
+  type: string
 }
 
 export type RecordUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  time?: Prisma.IntFieldUpdateOperationsInput | number
   distance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.RecordUpdateimagesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  time?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.GroupUpdateOneRequiredWithoutRecordsNestedInput
   participant?: Prisma.ParticipantUpdateOneRequiredWithoutRecordsNestedInput
 }
 
 export type RecordUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  time?: Prisma.IntFieldUpdateOperationsInput | number
   distance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.RecordUpdateimagesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   groupId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   participantId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  time?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RecordCreateManyInput = {
   id?: bigint | number
-  type: string
   description?: string | null
-  time: number
   distance?: number | null
   images?: Prisma.RecordCreateimagesInput | string[]
   createdAt?: Date | string
   groupId: bigint | number
   participantId: bigint | number
+  time: number
+  type: string
 }
 
 export type RecordUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  time?: Prisma.IntFieldUpdateOperationsInput | number
   distance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.RecordUpdateimagesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  time?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RecordUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  time?: Prisma.IntFieldUpdateOperationsInput | number
   distance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.RecordUpdateimagesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   groupId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   participantId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  time?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RecordListRelationFilter = {
@@ -421,52 +421,52 @@ export type RecordOrderByRelationAggregateInput = {
 
 export type RecordCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  time?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   images?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   participantId?: Prisma.SortOrder
+  time?: Prisma.SortOrder
+  type?: Prisma.SortOrder
 }
 
 export type RecordAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  time?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   participantId?: Prisma.SortOrder
+  time?: Prisma.SortOrder
 }
 
 export type RecordMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  time?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   participantId?: Prisma.SortOrder
+  time?: Prisma.SortOrder
+  type?: Prisma.SortOrder
 }
 
 export type RecordMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  time?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   participantId?: Prisma.SortOrder
+  time?: Prisma.SortOrder
+  type?: Prisma.SortOrder
 }
 
 export type RecordSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  time?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   participantId?: Prisma.SortOrder
+  time?: Prisma.SortOrder
 }
 
 export type RecordCreateNestedManyWithoutGroupInput = {
@@ -576,24 +576,24 @@ export type RecordUpdateimagesInput = {
 
 export type RecordCreateWithoutGroupInput = {
   id?: bigint | number
-  type: string
   description?: string | null
-  time: number
   distance?: number | null
   images?: Prisma.RecordCreateimagesInput | string[]
   createdAt?: Date | string
+  time: number
+  type: string
   participant: Prisma.ParticipantCreateNestedOneWithoutRecordsInput
 }
 
 export type RecordUncheckedCreateWithoutGroupInput = {
   id?: bigint | number
-  type: string
   description?: string | null
-  time: number
   distance?: number | null
   images?: Prisma.RecordCreateimagesInput | string[]
   createdAt?: Date | string
   participantId: bigint | number
+  time: number
+  type: string
 }
 
 export type RecordCreateOrConnectWithoutGroupInput = {
@@ -627,36 +627,36 @@ export type RecordScalarWhereInput = {
   OR?: Prisma.RecordScalarWhereInput[]
   NOT?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
   id?: Prisma.BigIntFilter<"Record"> | bigint | number
-  type?: Prisma.StringFilter<"Record"> | string
   description?: Prisma.StringNullableFilter<"Record"> | string | null
-  time?: Prisma.IntFilter<"Record"> | number
   distance?: Prisma.FloatNullableFilter<"Record"> | number | null
   images?: Prisma.StringNullableListFilter<"Record">
   createdAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   groupId?: Prisma.BigIntFilter<"Record"> | bigint | number
   participantId?: Prisma.BigIntFilter<"Record"> | bigint | number
+  time?: Prisma.IntFilter<"Record"> | number
+  type?: Prisma.StringFilter<"Record"> | string
 }
 
 export type RecordCreateWithoutParticipantInput = {
   id?: bigint | number
-  type: string
   description?: string | null
-  time: number
   distance?: number | null
   images?: Prisma.RecordCreateimagesInput | string[]
   createdAt?: Date | string
+  time: number
+  type: string
   group: Prisma.GroupCreateNestedOneWithoutRecordsInput
 }
 
 export type RecordUncheckedCreateWithoutParticipantInput = {
   id?: bigint | number
-  type: string
   description?: string | null
-  time: number
   distance?: number | null
   images?: Prisma.RecordCreateimagesInput | string[]
   createdAt?: Date | string
   groupId: bigint | number
+  time: number
+  type: string
 }
 
 export type RecordCreateOrConnectWithoutParticipantInput = {
@@ -687,149 +687,149 @@ export type RecordUpdateManyWithWhereWithoutParticipantInput = {
 
 export type RecordCreateManyGroupInput = {
   id?: bigint | number
-  type: string
   description?: string | null
-  time: number
   distance?: number | null
   images?: Prisma.RecordCreateimagesInput | string[]
   createdAt?: Date | string
   participantId: bigint | number
+  time: number
+  type: string
 }
 
 export type RecordUpdateWithoutGroupInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  time?: Prisma.IntFieldUpdateOperationsInput | number
   distance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.RecordUpdateimagesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  time?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   participant?: Prisma.ParticipantUpdateOneRequiredWithoutRecordsNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutGroupInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  time?: Prisma.IntFieldUpdateOperationsInput | number
   distance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.RecordUpdateimagesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   participantId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  time?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RecordUncheckedUpdateManyWithoutGroupInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  time?: Prisma.IntFieldUpdateOperationsInput | number
   distance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.RecordUpdateimagesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   participantId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  time?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RecordCreateManyParticipantInput = {
   id?: bigint | number
-  type: string
   description?: string | null
-  time: number
   distance?: number | null
   images?: Prisma.RecordCreateimagesInput | string[]
   createdAt?: Date | string
   groupId: bigint | number
+  time: number
+  type: string
 }
 
 export type RecordUpdateWithoutParticipantInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  time?: Prisma.IntFieldUpdateOperationsInput | number
   distance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.RecordUpdateimagesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  time?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.GroupUpdateOneRequiredWithoutRecordsNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutParticipantInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  time?: Prisma.IntFieldUpdateOperationsInput | number
   distance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.RecordUpdateimagesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   groupId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  time?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RecordUncheckedUpdateManyWithoutParticipantInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  time?: Prisma.IntFieldUpdateOperationsInput | number
   distance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.RecordUpdateimagesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   groupId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  time?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
 
 export type RecordSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
   description?: boolean
-  time?: boolean
   distance?: boolean
   images?: boolean
   createdAt?: boolean
   groupId?: boolean
   participantId?: boolean
+  time?: boolean
+  type?: boolean
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
   participant?: boolean | Prisma.ParticipantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record"]>
 
 export type RecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
   description?: boolean
-  time?: boolean
   distance?: boolean
   images?: boolean
   createdAt?: boolean
   groupId?: boolean
   participantId?: boolean
+  time?: boolean
+  type?: boolean
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
   participant?: boolean | Prisma.ParticipantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record"]>
 
 export type RecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
   description?: boolean
-  time?: boolean
   distance?: boolean
   images?: boolean
   createdAt?: boolean
   groupId?: boolean
   participantId?: boolean
+  time?: boolean
+  type?: boolean
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
   participant?: boolean | Prisma.ParticipantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record"]>
 
 export type RecordSelectScalar = {
   id?: boolean
-  type?: boolean
   description?: boolean
-  time?: boolean
   distance?: boolean
   images?: boolean
   createdAt?: boolean
   groupId?: boolean
   participantId?: boolean
+  time?: boolean
+  type?: boolean
 }
 
-export type RecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "description" | "time" | "distance" | "images" | "createdAt" | "groupId" | "participantId", ExtArgs["result"]["record"]>
+export type RecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "distance" | "images" | "createdAt" | "groupId" | "participantId" | "time" | "type", ExtArgs["result"]["record"]>
 export type RecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   group?: boolean | Prisma.GroupDefaultArgs<ExtArgs>
   participant?: boolean | Prisma.ParticipantDefaultArgs<ExtArgs>
@@ -851,14 +851,14 @@ export type $RecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
-    type: string
     description: string | null
-    time: number
     distance: number | null
     images: string[]
     createdAt: Date
     groupId: bigint
     participantId: bigint
+    time: number
+    type: string
   }, ExtArgs["result"]["record"]>
   composites: {}
 }
@@ -1285,14 +1285,14 @@ export interface Prisma__RecordClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface RecordFieldRefs {
   readonly id: Prisma.FieldRef<"Record", 'BigInt'>
-  readonly type: Prisma.FieldRef<"Record", 'String'>
   readonly description: Prisma.FieldRef<"Record", 'String'>
-  readonly time: Prisma.FieldRef<"Record", 'Int'>
   readonly distance: Prisma.FieldRef<"Record", 'Float'>
   readonly images: Prisma.FieldRef<"Record", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"Record", 'DateTime'>
   readonly groupId: Prisma.FieldRef<"Record", 'BigInt'>
   readonly participantId: Prisma.FieldRef<"Record", 'BigInt'>
+  readonly time: Prisma.FieldRef<"Record", 'Int'>
+  readonly type: Prisma.FieldRef<"Record", 'String'>
 }
     
 
