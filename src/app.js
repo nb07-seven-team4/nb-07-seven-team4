@@ -30,7 +30,7 @@ app.use("/uploads", express.static("uploads"));
 
 // API Routes
 app.use("/groups", groupRoutes);
-app.use("/groups", participantRoutes);
+app.use("/groups/:groupId/participants", participantRoutes);
 app.use("/groups/:groupId/records", recordRoutes);
 app.use("/groups/:groupId/rank", rankRoutes);
 app.use("/images", imageRoutes);

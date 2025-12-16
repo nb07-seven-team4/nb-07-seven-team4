@@ -77,15 +77,15 @@ export const GroupScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  photoUrl: 'photoUrl',
   tags: 'tags',
-  goalRep: 'goalRep',
   discordWebhookUrl: 'discordWebhookUrl',
   discordInviteUrl: 'discordInviteUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  goalRep: 'goalRep',
   likeCount: 'likeCount',
   ownerId: 'ownerId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  photoUrl: 'photoUrl'
 } as const
 
 export type GroupScalarFieldEnum = (typeof GroupScalarFieldEnum)[keyof typeof GroupScalarFieldEnum]
@@ -95,9 +95,9 @@ export const ParticipantScalarFieldEnum = {
   id: 'id',
   nickname: 'nickname',
   password: 'password',
-  isOwner: 'isOwner',
   groupId: 'groupId',
-  joinedAt: 'joinedAt'
+  joinedAt: 'joinedAt',
+  isOwner: 'isOwner'
 } as const
 
 export type ParticipantScalarFieldEnum = (typeof ParticipantScalarFieldEnum)[keyof typeof ParticipantScalarFieldEnum]
@@ -105,14 +105,14 @@ export type ParticipantScalarFieldEnum = (typeof ParticipantScalarFieldEnum)[key
 
 export const RecordScalarFieldEnum = {
   id: 'id',
-  type: 'type',
   description: 'description',
-  time: 'time',
   distance: 'distance',
   images: 'images',
   createdAt: 'createdAt',
   groupId: 'groupId',
-  participantId: 'participantId'
+  participantId: 'participantId',
+  time: 'time',
+  type: 'type'
 } as const
 
 export type RecordScalarFieldEnum = (typeof RecordScalarFieldEnum)[keyof typeof RecordScalarFieldEnum]

@@ -746,15 +746,15 @@ export const GroupScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  photoUrl: 'photoUrl',
   tags: 'tags',
-  goalRep: 'goalRep',
   discordWebhookUrl: 'discordWebhookUrl',
   discordInviteUrl: 'discordInviteUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  goalRep: 'goalRep',
   likeCount: 'likeCount',
   ownerId: 'ownerId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  photoUrl: 'photoUrl'
 } as const
 
 export type GroupScalarFieldEnum = (typeof GroupScalarFieldEnum)[keyof typeof GroupScalarFieldEnum]
@@ -764,9 +764,9 @@ export const ParticipantScalarFieldEnum = {
   id: 'id',
   nickname: 'nickname',
   password: 'password',
-  isOwner: 'isOwner',
   groupId: 'groupId',
-  joinedAt: 'joinedAt'
+  joinedAt: 'joinedAt',
+  isOwner: 'isOwner'
 } as const
 
 export type ParticipantScalarFieldEnum = (typeof ParticipantScalarFieldEnum)[keyof typeof ParticipantScalarFieldEnum]
@@ -774,14 +774,14 @@ export type ParticipantScalarFieldEnum = (typeof ParticipantScalarFieldEnum)[key
 
 export const RecordScalarFieldEnum = {
   id: 'id',
-  type: 'type',
   description: 'description',
-  time: 'time',
   distance: 'distance',
   images: 'images',
   createdAt: 'createdAt',
   groupId: 'groupId',
-  participantId: 'participantId'
+  participantId: 'participantId',
+  time: 'time',
+  type: 'type'
 } as const
 
 export type RecordScalarFieldEnum = (typeof RecordScalarFieldEnum)[keyof typeof RecordScalarFieldEnum]
@@ -856,20 +856,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -880,6 +866,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 

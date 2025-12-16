@@ -1,11 +1,14 @@
 import express from "express";
 import prisma from "../prismaClient.js";
-import { AppError } from "../utils/errors.js";
-import { BadRequestError } from "../utils/errors.js";
+import {
+  BadRequestError,
+  NotFoundError,
+  ConflictError,
+} from "../utils/errors.js";
 const router = express.Router({ mergeParams: true });
 
 // POST /groups/:groupId/participants - 그룹 참여
-router.post("/:groupId/join", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const { nickname, password } = req.body;
@@ -26,12 +29,12 @@ router.post("/:groupId/join", async (req, res, next) => {
       throw new ConflictError("이미 사용중인 닉네임");
     }
     const group = await prisma.group.findUnique({
-    where: { id: idToNum },
-});
+      where: { id: idToNum },
+    });
 
     if (!group) {
-    throw new NotFoundError("존재하지 않는 그룹 ID입니다.");
-}
+      throw new NotFoundError("존재하지 않는 그룹 ID입니다.");
+    }
 
     const newParticipant = await prisma.participant.create({
       data: {
@@ -42,14 +45,12 @@ router.post("/:groupId/join", async (req, res, next) => {
     });
 
     const responseGroupData = await prisma.group.findUnique({
-      where: {id: idToNum},
+      where: { id: idToNum },
       include: {
-        owner: true,
         participants: true,
-        tags: true,
         badges: true,
       },
-    })
+    });
     res.status(201).json(responseGroupData);
   } catch (error) {
     next(error);
@@ -57,7 +58,7 @@ router.post("/:groupId/join", async (req, res, next) => {
 });
 
 // DELETE /groups/:groupId/participants - 그룹 참여 취소
-router.delete("/:groupId/participants", async (req, res, next) => {
+router.delete("/", async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const { nickname, password } = req.body;
@@ -81,8 +82,8 @@ router.delete("/:groupId/participants", async (req, res, next) => {
     const deleteParticipant = await prisma.participant.delete({
       where: {
         id: existingParticipant.id,
-      }
-    })
+      },
+    });
     res.status(204).send();
   } catch (error) {
     next(error);

@@ -44,43 +44,43 @@ export type GroupMinAggregateOutputType = {
   id: bigint | null
   name: string | null
   description: string | null
-  photoUrl: string | null
-  goalRep: number | null
   discordWebhookUrl: string | null
   discordInviteUrl: string | null
-  likeCount: number | null
-  ownerId: bigint | null
   createdAt: Date | null
   updatedAt: Date | null
+  goalRep: number | null
+  likeCount: number | null
+  ownerId: bigint | null
+  photoUrl: string | null
 }
 
 export type GroupMaxAggregateOutputType = {
   id: bigint | null
   name: string | null
   description: string | null
-  photoUrl: string | null
-  goalRep: number | null
   discordWebhookUrl: string | null
   discordInviteUrl: string | null
-  likeCount: number | null
-  ownerId: bigint | null
   createdAt: Date | null
   updatedAt: Date | null
+  goalRep: number | null
+  likeCount: number | null
+  ownerId: bigint | null
+  photoUrl: string | null
 }
 
 export type GroupCountAggregateOutputType = {
   id: number
   name: number
   description: number
-  photoUrl: number
   tags: number
-  goalRep: number
   discordWebhookUrl: number
   discordInviteUrl: number
-  likeCount: number
-  ownerId: number
   createdAt: number
   updatedAt: number
+  goalRep: number
+  likeCount: number
+  ownerId: number
+  photoUrl: number
   _all: number
 }
 
@@ -103,43 +103,43 @@ export type GroupMinAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  photoUrl?: true
-  goalRep?: true
   discordWebhookUrl?: true
   discordInviteUrl?: true
-  likeCount?: true
-  ownerId?: true
   createdAt?: true
   updatedAt?: true
+  goalRep?: true
+  likeCount?: true
+  ownerId?: true
+  photoUrl?: true
 }
 
 export type GroupMaxAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  photoUrl?: true
-  goalRep?: true
   discordWebhookUrl?: true
   discordInviteUrl?: true
-  likeCount?: true
-  ownerId?: true
   createdAt?: true
   updatedAt?: true
+  goalRep?: true
+  likeCount?: true
+  ownerId?: true
+  photoUrl?: true
 }
 
 export type GroupCountAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  photoUrl?: true
   tags?: true
-  goalRep?: true
   discordWebhookUrl?: true
   discordInviteUrl?: true
-  likeCount?: true
-  ownerId?: true
   createdAt?: true
   updatedAt?: true
+  goalRep?: true
+  likeCount?: true
+  ownerId?: true
+  photoUrl?: true
   _all?: true
 }
 
@@ -233,15 +233,15 @@ export type GroupGroupByOutputType = {
   id: bigint
   name: string
   description: string
-  photoUrl: string
   tags: string[]
-  goalRep: number
   discordWebhookUrl: string
   discordInviteUrl: string
-  likeCount: number
-  ownerId: bigint
   createdAt: Date
   updatedAt: Date
+  goalRep: number
+  likeCount: number
+  ownerId: bigint
+  photoUrl: string
   _count: GroupCountAggregateOutputType | null
   _avg: GroupAvgAggregateOutputType | null
   _sum: GroupSumAggregateOutputType | null
@@ -271,36 +271,36 @@ export type GroupWhereInput = {
   id?: Prisma.BigIntFilter<"Group"> | bigint | number
   name?: Prisma.StringFilter<"Group"> | string
   description?: Prisma.StringFilter<"Group"> | string
-  photoUrl?: Prisma.StringFilter<"Group"> | string
   tags?: Prisma.StringNullableListFilter<"Group">
-  goalRep?: Prisma.IntFilter<"Group"> | number
   discordWebhookUrl?: Prisma.StringFilter<"Group"> | string
   discordInviteUrl?: Prisma.StringFilter<"Group"> | string
-  likeCount?: Prisma.IntFilter<"Group"> | number
-  ownerId?: Prisma.BigIntFilter<"Group"> | bigint | number
   createdAt?: Prisma.DateTimeFilter<"Group"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Group"> | Date | string
+  goalRep?: Prisma.IntFilter<"Group"> | number
+  likeCount?: Prisma.IntFilter<"Group"> | number
+  ownerId?: Prisma.BigIntFilter<"Group"> | bigint | number
+  photoUrl?: Prisma.StringFilter<"Group"> | string
+  badges?: Prisma.BadgeListRelationFilter
   participants?: Prisma.ParticipantListRelationFilter
   records?: Prisma.RecordListRelationFilter
-  badges?: Prisma.BadgeListRelationFilter
 }
 
 export type GroupOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  photoUrl?: Prisma.SortOrder
   tags?: Prisma.SortOrder
-  goalRep?: Prisma.SortOrder
   discordWebhookUrl?: Prisma.SortOrder
   discordInviteUrl?: Prisma.SortOrder
-  likeCount?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  goalRep?: Prisma.SortOrder
+  likeCount?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
+  badges?: Prisma.BadgeOrderByRelationAggregateInput
   participants?: Prisma.ParticipantOrderByRelationAggregateInput
   records?: Prisma.RecordOrderByRelationAggregateInput
-  badges?: Prisma.BadgeOrderByRelationAggregateInput
 }
 
 export type GroupWhereUniqueInput = Prisma.AtLeast<{
@@ -310,33 +310,33 @@ export type GroupWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.GroupWhereInput[]
   NOT?: Prisma.GroupWhereInput | Prisma.GroupWhereInput[]
   description?: Prisma.StringFilter<"Group"> | string
-  photoUrl?: Prisma.StringFilter<"Group"> | string
   tags?: Prisma.StringNullableListFilter<"Group">
-  goalRep?: Prisma.IntFilter<"Group"> | number
   discordWebhookUrl?: Prisma.StringFilter<"Group"> | string
   discordInviteUrl?: Prisma.StringFilter<"Group"> | string
-  likeCount?: Prisma.IntFilter<"Group"> | number
-  ownerId?: Prisma.BigIntFilter<"Group"> | bigint | number
   createdAt?: Prisma.DateTimeFilter<"Group"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Group"> | Date | string
+  goalRep?: Prisma.IntFilter<"Group"> | number
+  likeCount?: Prisma.IntFilter<"Group"> | number
+  ownerId?: Prisma.BigIntFilter<"Group"> | bigint | number
+  photoUrl?: Prisma.StringFilter<"Group"> | string
+  badges?: Prisma.BadgeListRelationFilter
   participants?: Prisma.ParticipantListRelationFilter
   records?: Prisma.RecordListRelationFilter
-  badges?: Prisma.BadgeListRelationFilter
 }, "id" | "name">
 
 export type GroupOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  photoUrl?: Prisma.SortOrder
   tags?: Prisma.SortOrder
-  goalRep?: Prisma.SortOrder
   discordWebhookUrl?: Prisma.SortOrder
   discordInviteUrl?: Prisma.SortOrder
-  likeCount?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  goalRep?: Prisma.SortOrder
+  likeCount?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
   _count?: Prisma.GroupCountOrderByAggregateInput
   _avg?: Prisma.GroupAvgOrderByAggregateInput
   _max?: Prisma.GroupMaxOrderByAggregateInput
@@ -351,132 +351,132 @@ export type GroupScalarWhereWithAggregatesInput = {
   id?: Prisma.BigIntWithAggregatesFilter<"Group"> | bigint | number
   name?: Prisma.StringWithAggregatesFilter<"Group"> | string
   description?: Prisma.StringWithAggregatesFilter<"Group"> | string
-  photoUrl?: Prisma.StringWithAggregatesFilter<"Group"> | string
   tags?: Prisma.StringNullableListFilter<"Group">
-  goalRep?: Prisma.IntWithAggregatesFilter<"Group"> | number
   discordWebhookUrl?: Prisma.StringWithAggregatesFilter<"Group"> | string
   discordInviteUrl?: Prisma.StringWithAggregatesFilter<"Group"> | string
-  likeCount?: Prisma.IntWithAggregatesFilter<"Group"> | number
-  ownerId?: Prisma.BigIntWithAggregatesFilter<"Group"> | bigint | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Group"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Group"> | Date | string
+  goalRep?: Prisma.IntWithAggregatesFilter<"Group"> | number
+  likeCount?: Prisma.IntWithAggregatesFilter<"Group"> | number
+  ownerId?: Prisma.BigIntWithAggregatesFilter<"Group"> | bigint | number
+  photoUrl?: Prisma.StringWithAggregatesFilter<"Group"> | string
 }
 
 export type GroupCreateInput = {
   id?: bigint | number
   name: string
   description: string
-  photoUrl: string
   tags?: Prisma.GroupCreatetagsInput | string[]
-  goalRep: number
   discordWebhookUrl: string
   discordInviteUrl: string
-  likeCount?: number
-  ownerId: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
+  goalRep: number
+  likeCount?: number
+  ownerId: bigint | number
+  photoUrl: string
+  badges?: Prisma.BadgeCreateNestedManyWithoutGroupInput
   participants?: Prisma.ParticipantCreateNestedManyWithoutGroupInput
   records?: Prisma.RecordCreateNestedManyWithoutGroupInput
-  badges?: Prisma.BadgeCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateInput = {
   id?: bigint | number
   name: string
   description: string
-  photoUrl: string
   tags?: Prisma.GroupCreatetagsInput | string[]
-  goalRep: number
   discordWebhookUrl: string
   discordInviteUrl: string
-  likeCount?: number
-  ownerId: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
+  goalRep: number
+  likeCount?: number
+  ownerId: bigint | number
+  photoUrl: string
+  badges?: Prisma.BadgeUncheckedCreateNestedManyWithoutGroupInput
   participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutGroupInput
   records?: Prisma.RecordUncheckedCreateNestedManyWithoutGroupInput
-  badges?: Prisma.BadgeUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.GroupUpdatetagsInput | string[]
-  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
   discordWebhookUrl?: Prisma.StringFieldUpdateOperationsInput | string
   discordInviteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
-  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  badges?: Prisma.BadgeUpdateManyWithoutGroupNestedInput
   participants?: Prisma.ParticipantUpdateManyWithoutGroupNestedInput
   records?: Prisma.RecordUpdateManyWithoutGroupNestedInput
-  badges?: Prisma.BadgeUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.GroupUpdatetagsInput | string[]
-  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
   discordWebhookUrl?: Prisma.StringFieldUpdateOperationsInput | string
   discordInviteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
-  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  badges?: Prisma.BadgeUncheckedUpdateManyWithoutGroupNestedInput
   participants?: Prisma.ParticipantUncheckedUpdateManyWithoutGroupNestedInput
   records?: Prisma.RecordUncheckedUpdateManyWithoutGroupNestedInput
-  badges?: Prisma.BadgeUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupCreateManyInput = {
   id?: bigint | number
   name: string
   description: string
-  photoUrl: string
   tags?: Prisma.GroupCreatetagsInput | string[]
-  goalRep: number
   discordWebhookUrl: string
   discordInviteUrl: string
-  likeCount?: number
-  ownerId: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
+  goalRep: number
+  likeCount?: number
+  ownerId: bigint | number
+  photoUrl: string
 }
 
 export type GroupUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.GroupUpdatetagsInput | string[]
-  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
   discordWebhookUrl?: Prisma.StringFieldUpdateOperationsInput | string
   discordInviteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
-  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type GroupUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.GroupUpdatetagsInput | string[]
-  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
   discordWebhookUrl?: Prisma.StringFieldUpdateOperationsInput | string
   discordInviteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
-  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type StringNullableListFilter<$PrismaModel = never> = {
@@ -491,15 +491,15 @@ export type GroupCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  photoUrl?: Prisma.SortOrder
   tags?: Prisma.SortOrder
-  goalRep?: Prisma.SortOrder
   discordWebhookUrl?: Prisma.SortOrder
   discordInviteUrl?: Prisma.SortOrder
-  likeCount?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  goalRep?: Prisma.SortOrder
+  likeCount?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
 }
 
 export type GroupAvgOrderByAggregateInput = {
@@ -513,28 +513,28 @@ export type GroupMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  photoUrl?: Prisma.SortOrder
-  goalRep?: Prisma.SortOrder
   discordWebhookUrl?: Prisma.SortOrder
   discordInviteUrl?: Prisma.SortOrder
-  likeCount?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  goalRep?: Prisma.SortOrder
+  likeCount?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
 }
 
 export type GroupMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  photoUrl?: Prisma.SortOrder
-  goalRep?: Prisma.SortOrder
   discordWebhookUrl?: Prisma.SortOrder
   discordInviteUrl?: Prisma.SortOrder
-  likeCount?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  goalRep?: Prisma.SortOrder
+  likeCount?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
 }
 
 export type GroupSumOrderByAggregateInput = {
@@ -570,16 +570,16 @@ export type GroupUpdatetagsInput = {
   push?: string | string[]
 }
 
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
+}
+
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
 }
 
 export type GroupCreateNestedOneWithoutParticipantsInput = {
@@ -628,34 +628,34 @@ export type GroupCreateWithoutParticipantsInput = {
   id?: bigint | number
   name: string
   description: string
-  photoUrl: string
   tags?: Prisma.GroupCreatetagsInput | string[]
-  goalRep: number
   discordWebhookUrl: string
   discordInviteUrl: string
-  likeCount?: number
-  ownerId: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
-  records?: Prisma.RecordCreateNestedManyWithoutGroupInput
+  goalRep: number
+  likeCount?: number
+  ownerId: bigint | number
+  photoUrl: string
   badges?: Prisma.BadgeCreateNestedManyWithoutGroupInput
+  records?: Prisma.RecordCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutParticipantsInput = {
   id?: bigint | number
   name: string
   description: string
-  photoUrl: string
   tags?: Prisma.GroupCreatetagsInput | string[]
-  goalRep: number
   discordWebhookUrl: string
   discordInviteUrl: string
-  likeCount?: number
-  ownerId: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
-  records?: Prisma.RecordUncheckedCreateNestedManyWithoutGroupInput
+  goalRep: number
+  likeCount?: number
+  ownerId: bigint | number
+  photoUrl: string
   badges?: Prisma.BadgeUncheckedCreateNestedManyWithoutGroupInput
+  records?: Prisma.RecordUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupCreateOrConnectWithoutParticipantsInput = {
@@ -678,68 +678,68 @@ export type GroupUpdateWithoutParticipantsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.GroupUpdatetagsInput | string[]
-  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
   discordWebhookUrl?: Prisma.StringFieldUpdateOperationsInput | string
   discordInviteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
-  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  records?: Prisma.RecordUpdateManyWithoutGroupNestedInput
+  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   badges?: Prisma.BadgeUpdateManyWithoutGroupNestedInput
+  records?: Prisma.RecordUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutParticipantsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.GroupUpdatetagsInput | string[]
-  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
   discordWebhookUrl?: Prisma.StringFieldUpdateOperationsInput | string
   discordInviteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
-  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  records?: Prisma.RecordUncheckedUpdateManyWithoutGroupNestedInput
+  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   badges?: Prisma.BadgeUncheckedUpdateManyWithoutGroupNestedInput
+  records?: Prisma.RecordUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupCreateWithoutRecordsInput = {
   id?: bigint | number
   name: string
   description: string
-  photoUrl: string
   tags?: Prisma.GroupCreatetagsInput | string[]
-  goalRep: number
   discordWebhookUrl: string
   discordInviteUrl: string
-  likeCount?: number
-  ownerId: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
-  participants?: Prisma.ParticipantCreateNestedManyWithoutGroupInput
+  goalRep: number
+  likeCount?: number
+  ownerId: bigint | number
+  photoUrl: string
   badges?: Prisma.BadgeCreateNestedManyWithoutGroupInput
+  participants?: Prisma.ParticipantCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutRecordsInput = {
   id?: bigint | number
   name: string
   description: string
-  photoUrl: string
   tags?: Prisma.GroupCreatetagsInput | string[]
-  goalRep: number
   discordWebhookUrl: string
   discordInviteUrl: string
-  likeCount?: number
-  ownerId: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
-  participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutGroupInput
+  goalRep: number
+  likeCount?: number
+  ownerId: bigint | number
+  photoUrl: string
   badges?: Prisma.BadgeUncheckedCreateNestedManyWithoutGroupInput
+  participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupCreateOrConnectWithoutRecordsInput = {
@@ -762,49 +762,49 @@ export type GroupUpdateWithoutRecordsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.GroupUpdatetagsInput | string[]
-  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
   discordWebhookUrl?: Prisma.StringFieldUpdateOperationsInput | string
   discordInviteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
-  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  participants?: Prisma.ParticipantUpdateManyWithoutGroupNestedInput
+  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   badges?: Prisma.BadgeUpdateManyWithoutGroupNestedInput
+  participants?: Prisma.ParticipantUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutRecordsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.GroupUpdatetagsInput | string[]
-  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
   discordWebhookUrl?: Prisma.StringFieldUpdateOperationsInput | string
   discordInviteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
-  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  participants?: Prisma.ParticipantUncheckedUpdateManyWithoutGroupNestedInput
+  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   badges?: Prisma.BadgeUncheckedUpdateManyWithoutGroupNestedInput
+  participants?: Prisma.ParticipantUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupCreateWithoutBadgesInput = {
   id?: bigint | number
   name: string
   description: string
-  photoUrl: string
   tags?: Prisma.GroupCreatetagsInput | string[]
-  goalRep: number
   discordWebhookUrl: string
   discordInviteUrl: string
-  likeCount?: number
-  ownerId: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
+  goalRep: number
+  likeCount?: number
+  ownerId: bigint | number
+  photoUrl: string
   participants?: Prisma.ParticipantCreateNestedManyWithoutGroupInput
   records?: Prisma.RecordCreateNestedManyWithoutGroupInput
 }
@@ -813,15 +813,15 @@ export type GroupUncheckedCreateWithoutBadgesInput = {
   id?: bigint | number
   name: string
   description: string
-  photoUrl: string
   tags?: Prisma.GroupCreatetagsInput | string[]
-  goalRep: number
   discordWebhookUrl: string
   discordInviteUrl: string
-  likeCount?: number
-  ownerId: bigint | number
   createdAt?: Date | string
   updatedAt?: Date | string
+  goalRep: number
+  likeCount?: number
+  ownerId: bigint | number
+  photoUrl: string
   participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutGroupInput
   records?: Prisma.RecordUncheckedCreateNestedManyWithoutGroupInput
 }
@@ -846,15 +846,15 @@ export type GroupUpdateWithoutBadgesInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.GroupUpdatetagsInput | string[]
-  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
   discordWebhookUrl?: Prisma.StringFieldUpdateOperationsInput | string
   discordInviteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
-  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   participants?: Prisma.ParticipantUpdateManyWithoutGroupNestedInput
   records?: Prisma.RecordUpdateManyWithoutGroupNestedInput
 }
@@ -863,15 +863,15 @@ export type GroupUncheckedUpdateWithoutBadgesInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.GroupUpdatetagsInput | string[]
-  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
   discordWebhookUrl?: Prisma.StringFieldUpdateOperationsInput | string
   discordInviteUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
-  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  goalRep?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   participants?: Prisma.ParticipantUncheckedUpdateManyWithoutGroupNestedInput
   records?: Prisma.RecordUncheckedUpdateManyWithoutGroupNestedInput
 }
@@ -882,15 +882,15 @@ export type GroupUncheckedUpdateWithoutBadgesInput = {
  */
 
 export type GroupCountOutputType = {
+  badges: number
   participants: number
   records: number
-  badges: number
 }
 
 export type GroupCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  badges?: boolean | GroupCountOutputTypeCountBadgesArgs
   participants?: boolean | GroupCountOutputTypeCountParticipantsArgs
   records?: boolean | GroupCountOutputTypeCountRecordsArgs
-  badges?: boolean | GroupCountOutputTypeCountBadgesArgs
 }
 
 /**
@@ -901,6 +901,13 @@ export type GroupCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
    * Select specific fields to fetch from the GroupCountOutputType
    */
   select?: Prisma.GroupCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * GroupCountOutputType without action
+ */
+export type GroupCountOutputTypeCountBadgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BadgeWhereInput
 }
 
 /**
@@ -917,30 +924,23 @@ export type GroupCountOutputTypeCountRecordsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.RecordWhereInput
 }
 
-/**
- * GroupCountOutputType without action
- */
-export type GroupCountOutputTypeCountBadgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.BadgeWhereInput
-}
-
 
 export type GroupSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   description?: boolean
-  photoUrl?: boolean
   tags?: boolean
-  goalRep?: boolean
   discordWebhookUrl?: boolean
   discordInviteUrl?: boolean
-  likeCount?: boolean
-  ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  goalRep?: boolean
+  likeCount?: boolean
+  ownerId?: boolean
+  photoUrl?: boolean
+  badges?: boolean | Prisma.Group$badgesArgs<ExtArgs>
   participants?: boolean | Prisma.Group$participantsArgs<ExtArgs>
   records?: boolean | Prisma.Group$recordsArgs<ExtArgs>
-  badges?: boolean | Prisma.Group$badgesArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["group"]>
 
@@ -948,52 +948,52 @@ export type GroupSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   name?: boolean
   description?: boolean
-  photoUrl?: boolean
   tags?: boolean
-  goalRep?: boolean
   discordWebhookUrl?: boolean
   discordInviteUrl?: boolean
-  likeCount?: boolean
-  ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  goalRep?: boolean
+  likeCount?: boolean
+  ownerId?: boolean
+  photoUrl?: boolean
 }, ExtArgs["result"]["group"]>
 
 export type GroupSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   description?: boolean
-  photoUrl?: boolean
   tags?: boolean
-  goalRep?: boolean
   discordWebhookUrl?: boolean
   discordInviteUrl?: boolean
-  likeCount?: boolean
-  ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  goalRep?: boolean
+  likeCount?: boolean
+  ownerId?: boolean
+  photoUrl?: boolean
 }, ExtArgs["result"]["group"]>
 
 export type GroupSelectScalar = {
   id?: boolean
   name?: boolean
   description?: boolean
-  photoUrl?: boolean
   tags?: boolean
-  goalRep?: boolean
   discordWebhookUrl?: boolean
   discordInviteUrl?: boolean
-  likeCount?: boolean
-  ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  goalRep?: boolean
+  likeCount?: boolean
+  ownerId?: boolean
+  photoUrl?: boolean
 }
 
-export type GroupOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "photoUrl" | "tags" | "goalRep" | "discordWebhookUrl" | "discordInviteUrl" | "likeCount" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["group"]>
+export type GroupOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "tags" | "discordWebhookUrl" | "discordInviteUrl" | "createdAt" | "updatedAt" | "goalRep" | "likeCount" | "ownerId" | "photoUrl", ExtArgs["result"]["group"]>
 export type GroupInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  badges?: boolean | Prisma.Group$badgesArgs<ExtArgs>
   participants?: boolean | Prisma.Group$participantsArgs<ExtArgs>
   records?: boolean | Prisma.Group$recordsArgs<ExtArgs>
-  badges?: boolean | Prisma.Group$badgesArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type GroupIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1002,23 +1002,23 @@ export type GroupIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $GroupPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Group"
   objects: {
+    badges: Prisma.$BadgePayload<ExtArgs>[]
     participants: Prisma.$ParticipantPayload<ExtArgs>[]
     records: Prisma.$RecordPayload<ExtArgs>[]
-    badges: Prisma.$BadgePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
     name: string
     description: string
-    photoUrl: string
     tags: string[]
-    goalRep: number
     discordWebhookUrl: string
     discordInviteUrl: string
-    likeCount: number
-    ownerId: bigint
     createdAt: Date
     updatedAt: Date
+    goalRep: number
+    likeCount: number
+    ownerId: bigint
+    photoUrl: string
   }, ExtArgs["result"]["group"]>
   composites: {}
 }
@@ -1413,9 +1413,9 @@ readonly fields: GroupFieldRefs;
  */
 export interface Prisma__GroupClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  badges<T extends Prisma.Group$badgesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   participants<T extends Prisma.Group$participantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   records<T extends Prisma.Group$recordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$recordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  badges<T extends Prisma.Group$badgesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1448,15 +1448,15 @@ export interface GroupFieldRefs {
   readonly id: Prisma.FieldRef<"Group", 'BigInt'>
   readonly name: Prisma.FieldRef<"Group", 'String'>
   readonly description: Prisma.FieldRef<"Group", 'String'>
-  readonly photoUrl: Prisma.FieldRef<"Group", 'String'>
   readonly tags: Prisma.FieldRef<"Group", 'String[]'>
-  readonly goalRep: Prisma.FieldRef<"Group", 'Int'>
   readonly discordWebhookUrl: Prisma.FieldRef<"Group", 'String'>
   readonly discordInviteUrl: Prisma.FieldRef<"Group", 'String'>
-  readonly likeCount: Prisma.FieldRef<"Group", 'Int'>
-  readonly ownerId: Prisma.FieldRef<"Group", 'BigInt'>
   readonly createdAt: Prisma.FieldRef<"Group", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Group", 'DateTime'>
+  readonly goalRep: Prisma.FieldRef<"Group", 'Int'>
+  readonly likeCount: Prisma.FieldRef<"Group", 'Int'>
+  readonly ownerId: Prisma.FieldRef<"Group", 'BigInt'>
+  readonly photoUrl: Prisma.FieldRef<"Group", 'String'>
 }
     
 
@@ -1845,6 +1845,30 @@ export type GroupDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Group.badges
+ */
+export type Group$badgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Badge
+   */
+  select?: Prisma.BadgeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Badge
+   */
+  omit?: Prisma.BadgeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BadgeInclude<ExtArgs> | null
+  where?: Prisma.BadgeWhereInput
+  orderBy?: Prisma.BadgeOrderByWithRelationInput | Prisma.BadgeOrderByWithRelationInput[]
+  cursor?: Prisma.BadgeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BadgeScalarFieldEnum | Prisma.BadgeScalarFieldEnum[]
+}
+
+/**
  * Group.participants
  */
 export type Group$participantsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1890,30 +1914,6 @@ export type Group$recordsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.RecordScalarFieldEnum | Prisma.RecordScalarFieldEnum[]
-}
-
-/**
- * Group.badges
- */
-export type Group$badgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Badge
-   */
-  select?: Prisma.BadgeSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Badge
-   */
-  omit?: Prisma.BadgeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.BadgeInclude<ExtArgs> | null
-  where?: Prisma.BadgeWhereInput
-  orderBy?: Prisma.BadgeOrderByWithRelationInput | Prisma.BadgeOrderByWithRelationInput[]
-  cursor?: Prisma.BadgeWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.BadgeScalarFieldEnum | Prisma.BadgeScalarFieldEnum[]
 }
 
 /**
