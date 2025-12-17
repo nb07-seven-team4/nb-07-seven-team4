@@ -12,6 +12,7 @@ import participantRoutes from "./routes/participantRoutes.js";
 import recordRoutes from "./routes/recordRoutes.js";
 import rankRoutes from "./routes/rankRoutes.js";
 import imageRoutes from "./routes/imageRoutes.js";
+import badgeRoutes from "./routes/badgeRoutes.js";
 
 // BigInt → JSON 직렬화
 BigInt.prototype.toJSON = function () {
@@ -33,6 +34,7 @@ app.use("/groups", groupRoutes);
 app.use("/groups/:groupId/participants", participantRoutes);
 app.use("/groups/:groupId/records", recordRoutes);
 app.use("/groups/:groupId/rank", rankRoutes);
+app.use("/groups/:groupId/badges", badgeRoutes);
 app.use("/images", imageRoutes);
 
 // Health Check

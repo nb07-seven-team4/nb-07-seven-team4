@@ -5,6 +5,8 @@ import {
   NotFoundError,
   ConflictError,
 } from "../utils/errors.js";
+import { awardBadge, BADGE_TYPES } from "../services/badgeService.js";
+
 const router = express.Router({ mergeParams: true });
 
 // POST /groups/:groupId/participants - 그룹 참여
@@ -43,6 +45,15 @@ router.post("/", async (req, res, next) => {
         password: password,
       },
     });
+
+    // 그룹 참가자가 10명에 도달했는지 확인하고 배지를 수여
+    const participantCount = await prisma.participant.count({
+      where: { groupId: idToNum },
+    });
+
+    if (participantCount >= 10) {
+      await awardBadge(BigInt(idToNum), BADGE_TYPES.PARTICIPANT_10);
+    }
 
     const responseGroupData = await prisma.group.findUnique({
       where: { id: idToNum },

@@ -1,4 +1,4 @@
-// 편집 하셔서 사용바랍니다.
+// 배지 테스트용 시드 데이터
 import { prisma } from "./prisma.js";
 
 BigInt.prototype.toJSON = function () {
@@ -6,176 +6,337 @@ BigInt.prototype.toJSON = function () {
 };
 
 async function main() {
-  console.log("🌱 Seeding...");
+  console.log("🌱 배지 테스트용 시드 시작...");
 
-  // 기존 데이터 삭제 (테스트를 위해)
+  // 기존 데이터 삭제
+  await prisma.badge.deleteMany({});
   await prisma.record.deleteMany({});
   await prisma.participant.deleteMany({});
-  await prisma.badge.deleteMany({});
   await prisma.group.deleteMany({});
 
-  console.log("✅ 기존 데이터 삭제 완료");
+  console.log("✅ 기존 데이터 삭제 완료\n");
 
-  // 1. 테스트용 그룹 생성
-  const testGroup = await prisma.group.create({
+  // 테스트 이미지 경로 (절대 경로로 설정)
+  const testImagePath = "/test.jpg";
+
+  // ===================================
+  // 그룹 1: 모든 배지 획득 (참여자 10명, 기록 100개, 추천 100개)
+  // ===================================
+  console.log("📦 그룹 1 생성: 모든 배지 획득 그룹");
+  const group1 = await prisma.group.create({
     data: {
-      name: "런닝 크루 테스트",
-      description: "이미지 업로드 및 랭킹 테스트를 위한 그룹",
-      nickname: "관리자",
-      password: "test1234",
-      image: "https://example.com/group.jpg",
-      tags: ["런닝", "테스트", "건강"],
-      targetCount: 50,
-      discordWebhookUrl: "https://discord.com/webhook/test",
-      discordInviteUrl: "https://discord.gg/test",
-      recommendations: 10,
+      name: "test1",
+      description: "모든 배지를 획득한 그룹 (참여자 10명, 기록 100개, 추천 100개)",
+      photoUrl: testImagePath,
+      tags: ["런닝", "테스트", "완성"],
+      goalRep: 100,
+      discordWebhookUrl: "https://discord.com/webhook/test1",
+      discordInviteUrl: "https://discord.gg/test1",
+      likeCount: 100, // 추천 100개
+      ownerId: BigInt(1),
     },
   });
 
-  console.log(`✅ 그룹 생성 완료: ${testGroup.name} (ID: ${testGroup.id})`);
+  // 참여자 10명 생성
+  const participants1 = [];
+  for (let i = 1; i <= 10; i++) {
+    const participant = await prisma.participant.create({
+      data: {
+        nickname: `test1_user${i}`,
+        password: "password123",
+        isOwner: i === 1,
+        groupId: group1.id,
+      },
+    });
+    participants1.push(participant);
+  }
 
-  // 2. 참가자 3명 생성
-  const participant1 = await prisma.participant.create({
+  // 기록 100개 생성 (10명이 각각 10개씩)
+  for (let i = 0; i < 10; i++) {
+    for (let j = 1; j <= 10; j++) {
+      await prisma.record.create({
+        data: {
+          type: "런닝",
+          description: `test1 참여자${i + 1}의 ${j}번째 기록`,
+          time: 30 + j * 5, // 30분부터 5분씩 증가
+          distance: 5.0 + j * 0.5, // 5km부터 0.5km씩 증가
+          images: [testImagePath],
+          groupId: group1.id,
+          participantId: participants1[i].id,
+        },
+      });
+    }
+  }
+
+  console.log(`✅ 그룹 1 완료: ${group1.name} (ID: ${group1.id})`);
+  console.log(`   - 참여자: 10명`);
+  console.log(`   - 기록: 100개`);
+  console.log(`   - 추천: 100개`);
+  console.log(`   - 예상 배지: PARTICIPANT_10, RECORD_100, LIKE_100\n`);
+
+  // ===================================
+  // 그룹 2: 참여자 배지만 획득 (참여자 10명, 기록 50개, 추천 50개)
+  // ===================================
+  console.log("📦 그룹 2 생성: 참여자 배지만 획득");
+  const group2 = await prisma.group.create({
     data: {
-      nickname: "김러너",
-      password: "runner1234",
-      groupId: testGroup.id,
+      name: "test2",
+      description: "참여자 배지만 획득한 그룹 (참여자 10명, 기록 50개, 추천 50개)",
+      photoUrl: testImagePath,
+      tags: ["수영", "테스트"],
+      goalRep: 50,
+      discordWebhookUrl: "https://discord.com/webhook/test2",
+      discordInviteUrl: "https://discord.gg/test2",
+      likeCount: 50, // 추천 50개
+      ownerId: BigInt(2),
     },
   });
 
-  const participant2 = await prisma.participant.create({
+  // 참여자 10명 생성
+  const participants2 = [];
+  for (let i = 1; i <= 10; i++) {
+    const participant = await prisma.participant.create({
+      data: {
+        nickname: `test2_user${i}`,
+        password: "password123",
+        isOwner: i === 1,
+        groupId: group2.id,
+      },
+    });
+    participants2.push(participant);
+  }
+
+  // 기록 50개 생성 (5명이 각각 10개씩)
+  for (let i = 0; i < 5; i++) {
+    for (let j = 1; j <= 10; j++) {
+      await prisma.record.create({
+        data: {
+          type: "수영",
+          description: `test2 참여자${i + 1}의 ${j}번째 기록`,
+          time: 40 + j * 3,
+          distance: 1.0 + j * 0.2,
+          images: [testImagePath],
+          groupId: group2.id,
+          participantId: participants2[i].id,
+        },
+      });
+    }
+  }
+
+  console.log(`✅ 그룹 2 완료: ${group2.name} (ID: ${group2.id})`);
+  console.log(`   - 참여자: 10명`);
+  console.log(`   - 기록: 50개`);
+  console.log(`   - 추천: 50개`);
+  console.log(`   - 예상 배지: PARTICIPANT_10\n`);
+
+  // ===================================
+  // 그룹 3: 배지 없음 (참여자 5명, 기록 30개, 추천 30개)
+  // ===================================
+  console.log("📦 그룹 3 생성: 배지 없음");
+  const group3 = await prisma.group.create({
     data: {
-      nickname: "이스프린트",
-      password: "sprint1234",
-      groupId: testGroup.id,
+      name: "test3",
+      description: "아직 배지를 획득하지 못한 그룹 (참여자 5명, 기록 30개, 추천 30개)",
+      photoUrl: testImagePath,
+      tags: ["사이클", "테스트"],
+      goalRep: 30,
+      discordWebhookUrl: "https://discord.com/webhook/test3",
+      discordInviteUrl: "https://discord.gg/test3",
+      likeCount: 30, // 추천 30개
+      ownerId: BigInt(3),
     },
   });
 
-  const participant3 = await prisma.participant.create({
+  // 참여자 5명 생성
+  const participants3 = [];
+  for (let i = 1; i <= 5; i++) {
+    const participant = await prisma.participant.create({
+      data: {
+        nickname: `test3_user${i}`,
+        password: "password123",
+        isOwner: i === 1,
+        groupId: group3.id,
+      },
+    });
+    participants3.push(participant);
+  }
+
+  // 기록 30개 생성 (5명이 각각 6개씩)
+  for (let i = 0; i < 5; i++) {
+    for (let j = 1; j <= 6; j++) {
+      await prisma.record.create({
+        data: {
+          type: "사이클",
+          description: `test3 참여자${i + 1}의 ${j}번째 기록`,
+          time: 60 + j * 10,
+          distance: 15.0 + j * 2.0,
+          images: [testImagePath],
+          groupId: group3.id,
+          participantId: participants3[i].id,
+        },
+      });
+    }
+  }
+
+  console.log(`✅ 그룹 3 완료: ${group3.name} (ID: ${group3.id})`);
+  console.log(`   - 참여자: 5명`);
+  console.log(`   - 기록: 30개`);
+  console.log(`   - 추천: 30개`);
+  console.log(`   - 예상 배지: 없음\n`);
+
+  // ===================================
+  // 그룹 4: 기록 배지만 획득 (참여자 3명, 기록 100개, 추천 10개)
+  // ===================================
+  console.log("📦 그룹 4 생성: 기록 배지만 획득");
+  const group4 = await prisma.group.create({
     data: {
-      nickname: "박마라톤",
-      password: "marathon1234",
-      groupId: testGroup.id,
+      name: "test4",
+      description: "기록 배지만 획득한 그룹 (참여자 3명, 기록 100개, 추천 10개)",
+      photoUrl: testImagePath,
+      tags: ["요가", "테스트"],
+      goalRep: 100,
+      discordWebhookUrl: "https://discord.com/webhook/test4",
+      discordInviteUrl: "https://discord.gg/test4",
+      likeCount: 10, // 추천 10개
+      ownerId: BigInt(4),
     },
   });
 
-  console.log(`✅ 참가자 3명 생성 완료`);
+  // 참여자 3명 생성
+  const participants4 = [];
+  for (let i = 1; i <= 3; i++) {
+    const participant = await prisma.participant.create({
+      data: {
+        nickname: `test4_user${i}`,
+        password: "password123",
+        isOwner: i === 1,
+        groupId: group4.id,
+      },
+    });
+    participants4.push(participant);
+  }
 
-  // 3. 달리기 기록 생성 (랭킹 테스트용)
-  // 김러너 - 2개 기록
-  await prisma.record.create({
+  // 기록 100개 생성 (3명이 각각 33, 33, 34개)
+  const recordCounts = [34, 33, 33];
+  for (let i = 0; i < 3; i++) {
+    for (let j = 1; j <= recordCounts[i]; j++) {
+      await prisma.record.create({
+        data: {
+          type: "요가",
+          description: `test4 참여자${i + 1}의 ${j}번째 기록`,
+          time: 45 + j * 2,
+          distance: null, // 요가는 거리 없음
+          images: [testImagePath],
+          groupId: group4.id,
+          participantId: participants4[i].id,
+        },
+      });
+    }
+  }
+
+  console.log(`✅ 그룹 4 완료: ${group4.name} (ID: ${group4.id})`);
+  console.log(`   - 참여자: 3명`);
+  console.log(`   - 기록: 100개`);
+  console.log(`   - 추천: 10개`);
+  console.log(`   - 예상 배지: RECORD_100\n`);
+
+  // ===================================
+  // 그룹 5: 추천 배지만 획득 (참여자 5명, 기록 50개, 추천 100개)
+  // ===================================
+  console.log("📦 그룹 5 생성: 추천 배지만 획득");
+  const group5 = await prisma.group.create({
     data: {
-      exerciseType: "달리기",
-      description: "아침 조깅",
-      duration: 30, // 30분
-      distance: 5.0, // 5km
-      images: [], // 이미지 업로드 테스트에서 추가 예정
-      groupId: testGroup.id,
-      participantId: participant1.id,
+      name: "test5",
+      description: "추천 배지만 획득한 그룹 (참여자 5명, 기록 50개, 추천 100개)",
+      photoUrl: testImagePath,
+      tags: ["헬스", "테스트"],
+      goalRep: 50,
+      discordWebhookUrl: "https://discord.com/webhook/test5",
+      discordInviteUrl: "https://discord.gg/test5",
+      likeCount: 100, // 추천 100개
+      ownerId: BigInt(5),
     },
   });
 
-  await prisma.record.create({
-    data: {
-      exerciseType: "달리기",
-      description: "저녁 런닝",
-      duration: 45, // 45분
-      distance: 7.5, // 7.5km
-      images: [],
-      groupId: testGroup.id,
-      participantId: participant1.id,
-    },
-  });
+  // 참여자 5명 생성
+  const participants5 = [];
+  for (let i = 1; i <= 5; i++) {
+    const participant = await prisma.participant.create({
+      data: {
+        nickname: `test5_user${i}`,
+        password: "password123",
+        isOwner: i === 1,
+        groupId: group5.id,
+      },
+    });
+    participants5.push(participant);
+  }
 
-  // 이스프린트 - 1개 기록
-  await prisma.record.create({
-    data: {
-      exerciseType: "달리기",
-      description: "인터벌 트레이닝",
-      duration: 60, // 60분
-      distance: 10.0, // 10km
-      images: [],
-      groupId: testGroup.id,
-      participantId: participant2.id,
-    },
-  });
+  // 기록 50개 생성 (5명이 각각 10개씩)
+  for (let i = 0; i < 5; i++) {
+    for (let j = 1; j <= 10; j++) {
+      await prisma.record.create({
+        data: {
+          type: "헬스",
+          description: `test5 참여자${i + 1}의 ${j}번째 기록`,
+          time: 60 + j * 5,
+          distance: null, // 헬스는 거리 없음
+          images: [testImagePath],
+          groupId: group5.id,
+          participantId: participants5[i].id,
+        },
+      });
+    }
+  }
 
-  // 박마라톤 - 3개 기록 (최다 점수)
-  await prisma.record.create({
-    data: {
-      exerciseType: "달리기",
-      description: "장거리 런닝",
-      duration: 90, // 90분
-      distance: 15.0, // 15km
-      images: [],
-      groupId: testGroup.id,
-      participantId: participant3.id,
-    },
-  });
+  console.log(`✅ 그룹 5 완료: ${group5.name} (ID: ${group5.id})`);
+  console.log(`   - 참여자: 5명`);
+  console.log(`   - 기록: 50개`);
+  console.log(`   - 추천: 100개`);
+  console.log(`   - 예상 배지: LIKE_100\n`);
 
-  await prisma.record.create({
-    data: {
-      exerciseType: "달리기",
-      description: "회복 런",
-      duration: 40, // 40분
-      distance: 6.0, // 6km
-      images: [],
-      groupId: testGroup.id,
-      participantId: participant3.id,
-    },
-  });
+  // ===================================
+  // 요약
+  // ===================================
+  console.log("\n" + "=".repeat(60));
+  console.log("✅ 시드 완료! 배지 테스트용 그룹 5개 생성");
+  console.log("=".repeat(60));
+  console.log("\n📊 그룹별 배지 획득 예상:");
+  console.log(`\n1. ${group1.name} (ID: ${group1.id})`);
+  console.log("   🎯 배지 3개: PARTICIPANT_10, RECORD_100, LIKE_100");
+  console.log("   - 참여자: 10명 ✅ | 기록: 100개 ✅ | 추천: 100개 ✅");
 
-  await prisma.record.create({
-    data: {
-      exerciseType: "달리기",
-      description: "스피드 런",
-      duration: 25, // 25분
-      distance: 4.0, // 4km
-      images: [],
-      groupId: testGroup.id,
-      participantId: participant3.id,
-    },
-  });
+  console.log(`\n2. ${group2.name} (ID: ${group2.id})`);
+  console.log("   🎯 배지 1개: PARTICIPANT_10");
+  console.log("   - 참여자: 10명 ✅ | 기록: 50개 ❌ | 추천: 50개 ❌");
 
-  // 다른 운동 타입 기록 (랭킹에 포함되지 않음)
-  await prisma.record.create({
-    data: {
-      exerciseType: "웨이트",
-      description: "상체 운동",
-      duration: 60,
-      distance: null,
-      images: [],
-      groupId: testGroup.id,
-      participantId: participant1.id,
-    },
-  });
+  console.log(`\n3. ${group3.name} (ID: ${group3.id})`);
+  console.log("   🎯 배지 0개: 없음");
+  console.log("   - 참여자: 5명 ❌ | 기록: 30개 ❌ | 추천: 30개 ❌");
 
-  console.log(`✅ 운동 기록 7개 생성 완료 (달리기 6개, 웨이트 1개)`);
+  console.log(`\n4. ${group4.name} (ID: ${group4.id})`);
+  console.log("   🎯 배지 1개: RECORD_100");
+  console.log("   - 참여자: 3명 ❌ | 기록: 100개 ✅ | 추천: 10개 ❌");
 
-  // 4. 예상 랭킹 출력 (점수 공식: duration + distance * 15)
-  // 점수 공식이나 저장데이터로 계산로직은 아직
-  console.log("\n📊 예상 랭킹:");
-  console.log("1위: 박마라톤 - 총점 530점 (155 + 375)");
-  console.log("    - 기록1: 90 + (15 * 15) = 315점");
-  console.log("    - 기록2: 40 + (6 * 15) = 130점");
-  console.log("    - 기록3: 25 + (4 * 15) = 85점");
-  console.log("2위: 이스프린트 - 총점 210점 (60 + 150)");
-  console.log("    - 기록1: 60 + (10 * 15) = 210점");
-  console.log("3위: 김러너 - 총점 262.5점 (75 + 187.5)");
-  console.log("    - 기록1: 30 + (5 * 15) = 105점");
-  console.log("    - 기록2: 45 + (7.5 * 15) = 157.5점");
+  console.log(`\n5. ${group5.name} (ID: ${group5.id})`);
+  console.log("   🎯 배지 1개: LIKE_100");
+  console.log("   - 참여자: 5명 ❌ | 기록: 50개 ❌ | 추천: 100개 ✅");
 
-  console.log("\n✅ Seeding 완료!");
-  console.log(`\n🧪 테스트 정보:`);
-  console.log(`그룹 ID: ${testGroup.id}`);
-  console.log(`참가자1 (김러너) ID: ${participant1.id}`);
-  console.log(`참가자2 (이스프린트) ID: ${participant2.id}`);
-  console.log(`참가자3 (박마라톤) ID: ${participant3.id}`);
+  console.log("\n" + "=".repeat(60));
+  console.log("🧪 배지 테스트 방법:");
+  console.log("=".repeat(60));
+  console.log("\n1. 배지 수동 체크 (모든 그룹에 배지 부여):");
+  console.log(`   POST http://localhost:3003/groups/{groupId}/badges/check`);
+  console.log("\n2. 배지 목록 조회:");
+  console.log(`   GET http://localhost:3003/groups/{groupId}/badges`);
+  console.log("\n3. 배지 상태 및 진행률 조회:");
+  console.log(`   GET http://localhost:3003/groups/{groupId}/badges/status`);
+  console.log("\n" + "=".repeat(60) + "\n");
 }
 
 main()
   .catch(async (e) => {
-    console.error(e);
+    console.error("❌ 시드 에러:", e);
     process.exit(1);
   })
   .finally(async () => {
