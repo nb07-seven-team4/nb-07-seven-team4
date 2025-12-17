@@ -2,6 +2,7 @@ import express from "express";
 import prisma from "../prismaClient.js";
 import { Record } from "./record.js";
 import { deserialize } from "v8";
+import { awardBadge, BADGE_TYPES } from "../services/badgeService.js";
 
 const router = express.Router({ mergeParams: true });
 
@@ -63,6 +64,15 @@ router.post("/", async (req, res, next) => {
         },
       },
     });
+
+    // 그룹이 100건의 기록을 달성했는지 확인하고 배지를 수여
+    const recordCount = await prisma.record.count({
+      where: { groupId: groupId },
+    });
+
+    if (recordCount >= 100) {
+      await awardBadge(groupId, BADGE_TYPES.RECORD_100);
+    }
 
     // 응답 형식에 맞게 매핑
     const recordData = {
