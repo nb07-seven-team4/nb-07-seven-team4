@@ -31,6 +31,7 @@ export function badge(likeCount, records, participants) {
 }
 
 export function getBadgeStatus(req, res, next) {
+ 
   try {
     const likeCount = parseInt(req.query.likeCount || 0);
     const records = parseInt(req.query.records || 0);
