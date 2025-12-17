@@ -15,16 +15,23 @@ const config = {
 };
 
 export function badge(likeCount, records, participants) {
-  if (likeCount >= config.likeCount) {
-    return badges.like;
-  } else if (records >= config.records) {
-    return badges.records;
-  } else if (participants >= config.participants) {
-    return badges.participants;
-  }
-}
+    
+    const awardedBadges = []; 
 
-function getBadgeStatus(req, res, next) {
+    if (likeCount >= config.likeCount) {
+        awardedBadges.push(badges.like);
+    } 
+    if (records >= config.records) {
+        awardedBadges.push(badges.records);
+    }
+    if (participants >= config.participants) {
+        awardedBadges.push(badges.participants);
+    }
+    return awardedBadges; 
+}``
+
+export function getBadgeStatus(req, res, next) {
+ 
   try {
     const likeCount = parseInt(req.query.likeCount || 0);
     const records = parseInt(req.query.records || 0);
@@ -34,16 +41,21 @@ function getBadgeStatus(req, res, next) {
       return res.status(400).json({ message: "유효하지 않은 입력 값입니다." });
     }
 
-    const awardedBadge = checkBadge(likeCount, records, participants);
+    const awardedBadges = checkBadge(likeCount, records, participants);
+    
+    const message = awardedBadges.length > 0 
+            ? `${awardedBadges.join(', ')} 뱃지를 획득했습니다.`
+            : "획득한 뱃지가 없습니다.";
 
     res.status(200).json({
       success: true,
-      badge: awardedBadge || "None",
-      message: awardedBadge
-        ? `${awardedBadge} 뱃지를 획득했습니다.`
-        : "획득한 뱃지가 없습니다.",
+      badge: awardedBadges || "None",
+      message: message
     });
+
   } catch (e) {
     next(e);
   }
 }
+
+export default router;
