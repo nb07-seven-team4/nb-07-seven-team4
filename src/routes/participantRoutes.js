@@ -1,8 +1,10 @@
 import express from "express";
 import prisma from "../prismaClient.js";
-import { BadRequestError, NotFoundError, ConflictError } from "../utils/errors.js";
-
-
+import {
+  BadRequestError,
+  NotFoundError,
+  ConflictError,
+} from "../utils/errors.js";
 const router = express.Router({ mergeParams: true });
 
 // POST /groups/:groupId/participants - 그룹 참여

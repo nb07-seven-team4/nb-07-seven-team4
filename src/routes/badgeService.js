@@ -28,7 +28,7 @@ export function badge(likeCount, records, participants) {
         awardedBadges.push(badges.participants);
     }
     return awardedBadges; 
-}
+}``
 
 export function getBadgeStatus(req, res, next) {
  
