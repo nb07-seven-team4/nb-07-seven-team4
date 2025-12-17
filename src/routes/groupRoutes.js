@@ -2,12 +2,10 @@
 
 import express from "express";
 import prisma from "../prismaClient.js";
-// 추가로 필요한 Error?
 import { BadRequestError, NotFoundError } from "../utils/errors.js";
-// {안에 대문자로 해야하는데 group로 불러오고 있음 아마 group.js 수정 필}} ?????
 import { Group } from "./group.js";
-// 그룹 삭제 시 이미지 파일도 함께 삭제하기 위한 모듈
 import { promises as fs } from "fs";
+import { awardBadge, BADGE_TYPES } from "../services/badgeService.js";
 import path from "path";
 
 const router = express.Router({ mergeParams: true });
@@ -222,18 +220,18 @@ router.get("/", async (req, res, next) => {
         tags: group.tags,
         owner: owner
           ? {
-              id: Number(owner.id),
-              nickname: owner.nickname,
-              createdAt: owner.joinedAt.getTime(),
-              updatedAt: owner.joinedAt.getTime(),
-            }
+            id: Number(owner.id),
+            nickname: owner.nickname,
+            createdAt: owner.joinedAt.getTime(),
+            updatedAt: owner.joinedAt.getTime(),
+          }
           : {
-              // owner를 찾지 못한 경우 기본값 제공 (에러 방지)
-              id: 0,
-              nickname: "Unknown",
-              createdAt: group.createdAt.getTime(),
-              updatedAt: group.updatedAt.getTime(),
-            },
+            // owner를 찾지 못한 경우 기본값 제공 (에러 방지)
+            id: 0,
+            nickname: "Unknown",
+            createdAt: group.createdAt.getTime(),
+            updatedAt: group.updatedAt.getTime(),
+          },
         participants: group.participants.map((p) => ({
           id: Number(p.id),
           nickname: p.nickname,
@@ -297,18 +295,18 @@ router.get("/:groupId", async (req, res, next) => {
       tags: group.tags,
       owner: owner
         ? {
-            id: Number(owner.id),
-            nickname: owner.nickname,
-            createdAt: owner.joinedAt.getTime(),
-            updatedAt: owner.joinedAt.getTime(),
-          }
+          id: Number(owner.id),
+          nickname: owner.nickname,
+          createdAt: owner.joinedAt.getTime(),
+          updatedAt: owner.joinedAt.getTime(),
+        }
         : {
-            // owner를 찾지 못한 경우 기본값 제공
-            id: 0,
-            nickname: "Unknown",
-            createdAt: group.createdAt.getTime(),
-            updatedAt: group.updatedAt.getTime(),
-          },
+          // owner를 찾지 못한 경우 기본값 제공
+          id: 0,
+          nickname: "Unknown",
+          createdAt: group.createdAt.getTime(),
+          updatedAt: group.updatedAt.getTime(),
+        },
       participants: group.participants.map((p) => ({
         id: Number(p.id),
         nickname: p.nickname,
@@ -539,9 +537,11 @@ router.post("/:groupId/likes", async (req, res, next) => {
     if (!groupId) {
       throw new BadRequestError("ID는 필수");
     }
-    await prisma.group.update({
+    const id = BigInt(groupId);
+
+    const updatedGroup = await prisma.group.update({
       where: {
-        id: BigInt(groupId),
+        id: id,
       },
       data: {
         likeCount: {
@@ -549,6 +549,12 @@ router.post("/:groupId/likes", async (req, res, next) => {
         },
       },
     });
+
+    // 목표 달성 여부를 확인하고 LIKE_100 배지를 수여
+    if (updatedGroup.likeCount >= 100) {
+      await awardBadge(id, BADGE_TYPES.LIKE_100);
+    }
+
     res.status(200).json({ message: "그룹추천 성공" });
   } catch (error) {
     next(error);
