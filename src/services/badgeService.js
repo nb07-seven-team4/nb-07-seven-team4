@@ -1,3 +1,4 @@
+// badgeService.js
 import prisma from "../prismaClient.js";
 
 // 배지 유형 상수
@@ -137,7 +138,7 @@ export async function getBadgeStatus(groupId) {
   });
 
   const earnedBadgeTypes = new Set(currentBadges.map(b => b.type));
-
+  // 자격 상태 반환
   return {
     counts: counts,
     eligibility: {

@@ -19,10 +19,10 @@
   "name": "seven",
   "version": "1.0.0",
   "description": "[맨 아래로](#bottom)",
-  "main": "server.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "node src/app.js",
     "seed": "node prisma/seed.js"
   },
   "repository": {

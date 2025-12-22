@@ -1,3 +1,4 @@
+//imageRoutes.js
 import express from "express";
 import { upload } from "./multer.js";
 import { BadRequestError, NotFoundError } from "../utils/errors.js";

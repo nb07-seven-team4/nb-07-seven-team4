@@ -16,8 +16,8 @@ async function main() {
 
   console.log("✅ 기존 데이터 삭제 완료\n");
 
-  // 테스트 이미지 경로 (절대 경로로 설정)
-  const testImagePath = "/test.jpg";
+  // 테스트 이미지 경로 (uploads 폴더의 test-image.jpg 사용)
+  const testImagePath = "http://localhost:3003/uploads/test-image.jpg";
 
   // ===================================
   // 그룹 1: 모든 배지 획득 (참여자 10명, 기록 100개, 추천 100개)

@@ -1,103 +1,13 @@
+//participantRoutes.js
 import express from "express";
-import prisma from "../prismaClient.js";
-import {
-  BadRequestError,
-  NotFoundError,
-  ConflictError,
-} from "../utils/errors.js";
-import { awardBadge, BADGE_TYPES } from "../services/badgeService.js";
+import ParticipantController from "../controllers/ParticipantController.js";
 
 const router = express.Router({ mergeParams: true });
 
 // POST /groups/:groupId/participants - 그룹 참여
-router.post("/", async (req, res, next) => {
-  try {
-    const { groupId } = req.params;
-    const { nickname, password } = req.body;
-    const idToNum = parseInt(groupId, 10);
-    if (isNaN(idToNum)) {
-      throw new BadRequestError("ID가 유효하지 않습니다.");
-    }
-    if (!groupId || !nickname || !password) {
-      throw new BadRequestError("요청이 올바르지 않습니다.");
-    }
-    const existingParticipant = await prisma.participant.findFirst({
-      where: {
-        groupId: idToNum,
-        nickname: nickname,
-      },
-    });
-    if (existingParticipant) {
-      throw new ConflictError("이미 사용중인 닉네임");
-    }
-    const group = await prisma.group.findUnique({
-      where: { id: idToNum },
-    });
-
-    if (!group) {
-      throw new NotFoundError("존재하지 않는 그룹 ID입니다.");
-    }
-
-    const newParticipant = await prisma.participant.create({
-      data: {
-        groupId: idToNum,
-        nickname: nickname,
-        password: password,
-      },
-    });
-
-    // 그룹 참가자가 10명에 도달했는지 확인하고 배지를 수여
-    const participantCount = await prisma.participant.count({
-      where: { groupId: idToNum },
-    });
-
-    if (participantCount >= 10) {
-      await awardBadge(BigInt(idToNum), BADGE_TYPES.PARTICIPANT_10);
-    }
-
-    const responseGroupData = await prisma.group.findUnique({
-      where: { id: idToNum },
-      include: {
-        participants: true,
-        badges: true,
-      },
-    });
-    res.status(201).json(responseGroupData);
-  } catch (error) {
-    next(error);
-  }
-});
+router.post("/", ParticipantController.joinGroup.bind(ParticipantController));
 
 // DELETE /groups/:groupId/participants - 그룹 참여 취소
-router.delete("/", async (req, res, next) => {
-  try {
-    const { groupId } = req.params;
-    const { nickname, password } = req.body;
-    const idToNum = parseInt(groupId, 10);
-    if (isNaN(idToNum)) {
-      throw new BadRequestError("ID가 유효하지 않습니다.");
-    }
-    if (!groupId || !nickname || !password) {
-      throw new BadRequestError("요청이 올바르지 않습니다.");
-    }
-    const existingParticipant = await prisma.participant.findFirst({
-      where: {
-        groupId: idToNum,
-        nickname: nickname,
-        password: password,
-      },
-    });
-    if (!existingParticipant) {
-      throw new NotFoundError("그룹참여자 닉네임이 아닙니다.");
-    }
-    const deleteParticipant = await prisma.participant.delete({
-      where: {
-        id: existingParticipant.id,
-      },
-    });
-    res.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-});
+router.delete("/", ParticipantController.leaveGroup.bind(ParticipantController));
+
 export default router;
