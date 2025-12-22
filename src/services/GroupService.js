@@ -76,10 +76,7 @@ class GroupService {
       take: limit,
       orderBy: prismaOrderBy,
       include: {
-        participants: {
-          where: { isOwner: true },
-          take: 1,
-        },
+        participants: true,
         badges: true,
         _count: {
           select: {
