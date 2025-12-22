@@ -123,7 +123,7 @@ class GroupController {
       });
 
       const formattedGroups = groups.map((group) => {
-        const owner = group.participants[0];
+        const owner = group.participants.find((p) => p.isOwner);
 
         return {
           id: Number(group.id),
@@ -150,6 +150,12 @@ class GroupController {
                 createdAt: group.createdAt.getTime(),
                 updatedAt: group.updatedAt.getTime(),
               },
+          participants: group.participants.map((p) => ({
+            id: Number(p.id),
+            nickname: p.nickname,
+            createdAt: p.joinedAt.getTime(),
+            updatedAt: p.joinedAt.getTime(),
+          })),
           createdAt: group.createdAt.getTime(),
           updatedAt: group.updatedAt.getTime(),
           badges: group.badges.map((b) => b.type),
